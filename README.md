@@ -63,13 +63,13 @@ Run it:
 loom run customer_sentiment
 ```
 
-## Status
+## Documentation
 
 **Current Phase:** Design
 
-See [DESIGN_SPEC.md](DESIGN_SPEC.md) for complete architecture, examples, and roadmap.
-
-See [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md) for technical details, storage schema, and Phase 1 implementation plan.
+- **[DESIGN_SPEC.md](DESIGN_SPEC.md)** - Vision, high-level architecture, and roadmap
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive system design with component diagrams, API specs, and deployment patterns
+- **[IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md)** - Technical details, storage schema, and Phase 1 implementation plan
 
 ## Relationship to Arbiter
 
