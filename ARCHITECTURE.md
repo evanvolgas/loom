@@ -2046,6 +2046,76 @@ backend = ArbiterBackend()  # Or: CustomBackend()
 - **Provider Independence:** Not locked to specific databases or APIs
 - **Reusability:** Connectors can be shared across pipelines
 
+### Why Python (Not Go)?
+
+**Decision:** Implement Loom in Python 3.10+, not Go.
+
+**Context:** During initial setup, we considered whether Python or Go would be better for Loom's implementation.
+
+**Rationale:**
+
+**1. Arbiter Integration (Decisive)**
+- Arbiter is Python with hard dependency design
+- Python: Direct import (`from arbiter import evaluate`) - zero integration overhead
+- Go: Would require HTTP/gRPC service wrapper, serialization, network latency
+- Saves 2-3 weeks of development time for integration layer alone
+
+**2. Data Engineering Ecosystem**
+- Target audience: Data engineers using dbt (Python), Airflow (Python), Pandas (Python)
+- ALL major data orchestration tools are Python (dbt, Airflow, Prefect, Dagster)
+- Cultural fit - data engineers expect Python tools
+- Rich connector ecosystem (SQLAlchemy, database drivers)
+
+**3. I/O-Bound Workload**
+- Pipeline bottleneck: LLM API calls (100-1000ms) + database I/O (10-100ms)
+- Python overhead (~1ms function call) is negligible compared to external I/O
+- Go's performance advantage doesn't matter for I/O-bound workloads
+- Even processing 10K records, limited by LLM API rate limits, not Python speed
+
+**4. Development Velocity**
+- Both Arbiter and Loom in same language
+- Share patterns: async/await, Pydantic models, error handling
+- Reuse infrastructure: LLM client abstraction from Arbiter
+- Single development environment and testing framework
+- Faster iteration during alpha phase
+
+**5. Maintenance**
+- One language to maintain vs context switching Python ↔ Go
+- Coordinated evolution of both projects
+- Easy to coordinate breaking changes
+- Shared code patterns and conventions
+
+**Go's Advantages Don't Apply:**
+
+**Single Binary Distribution:**
+- Modern Python packaging (uv, pipx) makes distribution simple:
+  ```bash
+  uv tool install loom  # Global installation
+  loom run pipeline     # Just works
+  ```
+- Data engineers already have Python installed
+- Docker deployment is equivalent for both languages
+
+**Performance:**
+- Irrelevant for I/O-bound workload
+- Pipeline execution time dominated by external API calls, not CPU
+
+**Concurrency:**
+- Python's asyncio handles thousands of concurrent LLM calls efficiently
+- Goroutines offer no practical advantage for this use case
+
+**Real-World Pattern:**
+Every major data orchestration tool chose Python for the same reasons:
+- **dbt:** Python (orchestrates SQL transformations)
+- **Airflow:** Python (orchestrates data pipelines)
+- **Prefect:** Python (modern workflow orchestration)
+- **Dagster:** Python (data orchestration with testing)
+
+**Exception Scenario:**
+If Loom later needs CPU-intensive transformations at millions of records/second, THEN consider Go rewrite. But start with Python following "Make it work, make it right, make it fast."
+
+**Conclusion:** Python is the clear choice for Loom v1.0. It's not "Go can't work" - it's "Python is dramatically better suited for this specific use case."
+
 ---
 
 ## Summary
