@@ -92,7 +92,8 @@ evaluate:
       config:
         criteria: "Accurate sentiment, appropriate tone, no hallucination"
         threshold: 0.75
-  quality_gate: all_pass  # Options: all_pass, majority_pass, any_pass
+  quality_gate: all_pass  # Options: all_pass, majority_pass, any_pass, weighted
+                                # See QUALITY_GATES.md for detailed semantics
 
 load:
   destination: postgres://analytics/sentiment_scores

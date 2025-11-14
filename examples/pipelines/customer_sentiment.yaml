@@ -1,0 +1,29 @@
+name: customer_sentiment
+version: 1.0.0
+description: Classify customer review sentiment using LLM with quality gates
+
+extract:
+  source: data/customer_reviews.csv
+  batch_size: 100
+
+transform:
+  prompt: prompts/classify_sentiment.txt
+  model: gpt-4o-mini
+  provider: openai
+  batch_size: 5
+  temperature: 0.3
+  timeout: 60.0
+
+evaluate:
+  evaluators:
+    - name: semantic
+      type: semantic
+      threshold: 0.7
+  quality_gate: all_pass
+  reference_field: expected_sentiment
+  timeout: 30.0
+
+load:
+  destination: data/sentiment_results.csv
+  mode: overwrite
+  batch_size: 100

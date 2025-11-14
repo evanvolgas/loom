@@ -2,7 +2,30 @@
 
 **Orchestration framework for AI pipelines with built-in evaluation**
 
-<p><em>⚠️ Design Phase: Not yet implemented. See DESIGN_SPEC.md for vision.</em></p>
+> **⚠️ ALPHA SOFTWARE - ACTIVE DEVELOPMENT**
+>
+> Loom is in early alpha stage. The API and features are rapidly evolving and **not yet stable**.
+>
+> **Current Status:**
+> - ✅ **Phase 1 Complete**: Core pipeline engine working (Extract, Transform, Evaluate, Load)
+> - ⚠️ **API Stability**: Breaking changes expected
+> - 🚧 **Production Use**: Not recommended yet - use for experimentation only
+> - 📝 **Documentation**: Continuously improving
+>
+> **What Works:**
+> - CSV/JSON/JSONL/Parquet extraction
+> - LLM transformation (OpenAI, Anthropic, Google, Groq)
+> - Arbiter evaluation with quality gates
+> - CSV/JSON/JSONL/Parquet loading
+> - Circuit breaker resilience
+> - Basic CLI (`loom run`, `loom validate`)
+>
+> **Coming Soon:**
+> - Database connectors (Postgres, MySQL)
+> - More evaluators (factuality, relevance, toxicity)
+> - Cost tracking and observability
+> - Testing framework
+> - Better error messages and debugging
 
 ---
 
@@ -70,6 +93,8 @@ loom run customer_sentiment
 - **[DESIGN_SPEC.md](DESIGN_SPEC.md)** - Vision, high-level architecture, and roadmap
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive system design with component diagrams, API specs, and deployment patterns
 - **[IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md)** - Technical details, storage schema, and Phase 1 implementation plan
+- **[QUALITY_GATES.md](QUALITY_GATES.md)** - Precise semantics for quality gate evaluation logic with executable examples
+- **[TIMEOUTS.md](TIMEOUTS.md)** - Timeout specifications for all external operations and resilience patterns
 
 ## Getting Started
 

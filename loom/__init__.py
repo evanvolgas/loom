@@ -1,16 +1,78 @@
-"""Loom - Orchestration framework for AI pipelines with built-in evaluation.
+"""Loom - Declarative orchestration framework for AI pipelines."""
 
-Loom is the "dbt for AI(E)TL" - a declarative orchestration framework that extends
-traditional ETL with evaluation gates: Extract → Transform → Evaluate → Load.
-"""
+from .core import (
+    ConfigurationError,
+    ConnectorError,
+    DestinationType,
+    EvaluateConfig,
+    EvaluateError,
+    EvaluatorConfig,
+    ExtractConfig,
+    ExtractError,
+    # Config
+    GlobalConfig,
+    LoadConfig,
+    LoadError,
+    # Exceptions
+    LoomError,
+    PipelineConfig,
+    PipelineError,
+    PipelineRun,
+    PipelineRunMetrics,
+    PipelineStatus,
+    QualityGateError,
+    QualityGateType,
+    # Models
+    Record,
+    RecordStatus,
+    SourceType,
+    # Types
+    StageType,
+    TimeoutError,
+    TransformConfig,
+    TransformError,
+    ValidationError,
+    config,
+    get_config,
+    reload_config,
+)
 
-__version__ = "0.1.0-alpha"
-
-# Public API will be exported here as modules are implemented
-# from .pipeline import Pipeline
-# from .core.config import LoomConfig
-# from .engines import ExtractEngine, TransformEngine, EvaluateEngine, LoadEngine
+__version__ = "0.0.1"
 
 __all__ = [
     "__version__",
+    # Types
+    "StageType",
+    "QualityGateType",
+    "SourceType",
+    "DestinationType",
+    "PipelineStatus",
+    "RecordStatus",
+    # Exceptions
+    "LoomError",
+    "ConfigurationError",
+    "ExtractError",
+    "TransformError",
+    "EvaluateError",
+    "LoadError",
+    "QualityGateError",
+    "PipelineError",
+    "ValidationError",
+    "ConnectorError",
+    "TimeoutError",
+    # Models
+    "Record",
+    "EvaluatorConfig",
+    "ExtractConfig",
+    "TransformConfig",
+    "EvaluateConfig",
+    "LoadConfig",
+    "PipelineConfig",
+    "PipelineRunMetrics",
+    "PipelineRun",
+    # Config
+    "GlobalConfig",
+    "config",
+    "get_config",
+    "reload_config",
 ]

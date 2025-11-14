@@ -1,108 +1,141 @@
+[build-system]
+requires = ["setuptools>=70.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "loom"
-version = "0.1.0-alpha"
+version = "0.0.1"
 description = "Declarative orchestration framework for AI pipelines with built-in evaluation"
-readme = "README.md"
-requires-python = ">=3.10"
+authors = [{name = "Evan Volgas", email = "evan.volgas@gmail.com"}]
 license = {text = "MIT"}
-authors = [
-    {name = "Evan Volgas", email = "evan.volgas@gmail.com"}
-]
-keywords = ["ai", "evaluation", "pipeline", "orchestration", "etl", "llm"]
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+keywords = ["ai", "llm", "pipeline", "orchestration", "evaluation", "etl", "aietl"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
+# Core dependencies - minimal for basic functionality
 dependencies = [
-    "arbiter>=0.1.0",          # Hard dependency for evaluation
-    "pydantic>=2.12",          # Data validation and serialization
-    "pydantic-settings>=2.0",  # Configuration management
-    "click>=8.0",              # CLI framework
-    "sqlalchemy>=2.0",         # ORM for storage
-    "alembic>=1.13",           # Database migrations
-    "asyncpg>=0.29",           # PostgreSQL async driver
-    "aiosqlite>=0.20",         # SQLite async driver
-    "pyyaml>=6.0",             # YAML parsing
-    "jinja2>=3.0",             # Template rendering
-    "httpx>=0.28",             # Async HTTP client
-    "rich>=13.0",              # CLI formatting
-    "structlog>=25.0",         # Structured logging
-    "python-dotenv>=1.0",      # Environment variable management
+    "arbiter @ git+https://github.com/evanvolgas/arbiter.git",  # Hard dependency for evaluation
+    "pydantic>=2.12.0",
+    "pyyaml>=6.0.0",
+    "polars>=0.19.0",  # DataFrame processing (faster than pandas)
+    "pyarrow>=14.0.0",  # Parquet support
+    "click>=8.0.0",  # CLI framework
+    "httpx>=0.28.0",  # Async HTTP (for future HTTP sources)
+    "python-dotenv>=1.0.1",
+    "aiofiles>=25.0.0",
+    "rich>=14.0.0",  # CLI formatting and progress bars
+    "typing-extensions>=4.0.0",
 ]
 
 [project.optional-dependencies]
+# Database connectors (Phase 2+)
+postgres = [
+    "psycopg[binary,pool]>=3.0.0",
+    "sqlalchemy>=2.0.0",
+]
+
+# Cache and storage backends (Phase 3+)
+redis = ["redis>=5.0.0"]
+
+# Streaming support (Phase 7)
+streaming = ["bytewax>=0.20.0"]
+
+# Development tools
 dev = [
-    "pytest>=9.0",
-    "pytest-asyncio>=1.0",
-    "pytest-cov>=6.0",
-    "mypy>=1.18",
-    "ruff>=0.14",
-    "types-pyyaml",
-    "types-redis",
+    # Testing
+    "pytest>=9.0.0",
+    "pytest-cov>=7.0.0",
+    "pytest-asyncio>=1.0.0",
+    "pytest-mock>=3.15.0",
+    "pytest-xdist>=3.8.0",  # Parallel test execution
+
+    # Code quality
+    "black>=25.0.0",
+    "mypy>=1.18.0",
+    "ruff>=0.14.0",
+    "types-pyyaml>=6.0.0",
+    "types-aiofiles>=25.0.0",
+
+    # Interactive development
+    "ipython>=9.0.0",
+    "ipdb>=0.13.13",
+
+    # Documentation
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.7.0",
+    "mkdocstrings[python]>=0.30.0",
+
+    # Development utilities
+    "pre-commit>=4.0.0",
+    "watchdog>=6.0.0",
 ]
 
-redis = [
-    "redis>=5.0",              # Redis caching backend
-]
-
-all = [
-    "loom[dev,redis]",
-]
-
-[project.urls]
-Homepage = "https://github.com/evanvolgas/loom"
-Documentation = "https://github.com/evanvolgas/loom"
-Repository = "https://github.com/evanvolgas/loom"
-Issues = "https://github.com/evanvolgas/loom/issues"
+# All features
+all = ["loom[postgres,redis,streaming,dev]"]
 
 [project.scripts]
 loom = "loom.cli.main:cli"
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["loom*"]
 
-[tool.hatch.build.targets.wheel]
-packages = ["loom"]
+[tool.setuptools.package-data]
+loom = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310', 'py311', 'py312', 'py313']
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+]
+
+ignore = [
+    "E501",   # line too long (handled by formatter)
+]
+
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["loom"]
+combine-as-imports = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
 
 [tool.pytest.ini_options]
-minversion = "9.0"
-addopts = [
-    "-ra",
-    "-q",
-    "--strict-markers",
-    "--strict-config",
-    "--cov=loom",
-    "--cov-report=term-missing",
-    "--cov-report=html",
-]
+minversion = "8.0"
+addopts = ["--strict-markers", "--cov=loom", "--cov-report=term-missing"]
 testpaths = ["tests"]
-asyncio_mode = "auto"
-asyncio_default_fixture_loop_scope = "function"
-
-[tool.coverage.run]
-source = ["loom"]
-omit = [
-    "*/tests/*",
-    "*/test_*.py",
-]
-
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "if TYPE_CHECKING:",
-    "raise AssertionError",
-    "raise NotImplementedError",
-    "@abstractmethod",
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks tests as integration tests",
+    "performance: marks tests as performance tests",
+    "e2e: marks tests as end-to-end pipeline tests",
 ]
 
 [tool.mypy]
@@ -111,66 +144,27 @@ strict = true
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
-disallow_incomplete_defs = true
 check_untyped_defs = true
-disallow_untyped_decorators = true
 no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
+show_error_codes = true
+pretty = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+no_implicit_reexport = true
+strict_optional = true
+strict_equality = true
 warn_no_return = true
-follow_imports = "normal"
-plugins = ["pydantic.mypy"]
+warn_unreachable = true
 
 [[tool.mypy.overrides]]
 module = "tests.*"
 disallow_untyped_defs = false
 
-[tool.ruff]
-target-version = "py310"
-line-length = 88
-exclude = [
-    ".git",
-    ".mypy_cache",
-    ".pytest_cache",
-    ".ruff_cache",
-    ".venv",
-    "__pycache__",
-    "build",
-    "dist",
-]
-
-[tool.ruff.lint]
-select = [
-    "E",      # pycodestyle errors
-    "W",      # pycodestyle warnings
-    "F",      # pyflakes
-    "I",      # isort
-    "B",      # flake8-bugbear
-    "C4",     # flake8-comprehensions
-    "UP",     # pyupgrade
-    "ARG",    # flake8-unused-arguments
-    "SIM",    # flake8-simplify
-    "TCH",    # flake8-type-checking
-    "PTH",    # flake8-use-pathlib
-    "RUF",    # ruff-specific rules
-]
-ignore = [
-    "E501",   # line too long (handled by formatter)
-    "B008",   # do not perform function calls in argument defaults
-    "C901",   # too complex
-    "W191",   # indentation contains tabs
-]
-
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]  # Allow unused imports in __init__.py
-
-[tool.ruff.lint.isort]
-known-first-party = ["loom"]
-force-single-line = false
-split-on-trailing-comma = true
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
+[[tool.mypy.overrides]]
+module = ["polars", "polars.*", "pyarrow", "pyarrow.*"]
+ignore_missing_imports = true

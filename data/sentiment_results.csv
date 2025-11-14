@@ -1,0 +1,6 @@
+review_id,review_text,expected_sentiment,loom_record_id,loom_transformed_data,loom_quality_gate_passed,loom_score_semantic
+1,This product is amazing! Best purchase I've ever made.,POSITIVE,0,"POSITIVE - The customer expresses strong satisfaction and enthusiasm about the product, indicating it exceeds their expectations.",true,0.8
+2,Terrible quality. Broke after one use.,NEGATIVE,1,NEGATIVE - The customer expresses dissatisfaction with the product's quality and indicates that it failed after minimal use.,true,0.7
+3,It's okay. Nothing special but does the job.,NEUTRAL,2,"NEUTRAL - The review indicates a lack of strong feelings, suggesting that while the product is functional, it does not exceed expectations or evoke any particular enthusiasm.",true,0.7
+4,Love it! Would definitely recommend to friends.,POSITIVE,3,"POSITIVE - The customer expresses strong approval and a willingness to recommend the product to others, indicating satisfaction.",true,0.7
+5,Waste of money. Very disappointed.,NEGATIVE,4,"NEGATIVE - The customer expresses dissatisfaction and disappointment, indicating that they feel their purchase was not worth the money spent.",true,0.7

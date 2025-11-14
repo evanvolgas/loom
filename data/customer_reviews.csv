@@ -1,0 +1,6 @@
+review_id,review_text,expected_sentiment
+1,"This product is amazing! Best purchase I've ever made.",POSITIVE
+2,"Terrible quality. Broke after one use.",NEGATIVE
+3,"It's okay. Nothing special but does the job.",NEUTRAL
+4,"Love it! Would definitely recommend to friends.",POSITIVE
+5,"Waste of money. Very disappointed.",NEGATIVE

@@ -2006,6 +2006,71 @@ backend = ArbiterBackend()  # Or: CustomBackend()
 
 **Conclusion:** Hard dependency is the right choice for v1.0. It's not "too difficult" to abstract - it's "too early" to abstract. Let real-world usage patterns emerge before adding complexity.
 
+### Production Resilience Patterns
+
+**Decision:** Implement circuit breaker, timeout specifications, and quality gate semantics before Phase 1 completion.
+
+**Context:** Expert specification review (2025-11-14) identified critical production readiness gaps:
+1. No circuit breaker for upstream service protection
+2. Missing timeout specifications
+3. Ambiguous quality gate semantics
+
+**Implementation:**
+
+**1. Circuit Breaker Pattern** (see `loom/resilience/circuit_breaker.py`)
+- Protects against cascading failures from upstream services (Arbiter, databases, S3)
+- Three states: CLOSED (normal), OPEN (failing), HALF_OPEN (testing recovery)
+- Configurable failure threshold, timeout, and success threshold
+- Prevents DoS on recovering services by blocking requests when open
+
+```python
+# Example: Protect LLM API calls with circuit breaker
+from loom.resilience import CircuitBreaker, CircuitBreakerConfig
+
+llm_breaker = CircuitBreaker(
+    name="arbiter_llm",
+    config=CircuitBreakerConfig(
+        failure_threshold=5,      # Open after 5 consecutive failures
+        timeout_seconds=60,       # Stay open for 60s before testing
+        success_threshold=3       # Close after 3 consecutive successes
+    )
+)
+
+# Use in transform engine
+try:
+    response = await llm_breaker.call(
+        self.llm_client.generate,
+        prompt=prompt
+    )
+except CircuitBreakerOpenError:
+    # Fallback: use cached response or skip record
+    response = get_cached_response(prompt)
+```
+
+**2. Timeout Specifications** (see `TIMEOUTS.md`)
+- Precise timeout values for all external operations
+- LLM API calls: 30-60s depending on model
+- Database queries: 3-30s with statement-level enforcement
+- S3 operations: 5-60s
+- Cache operations: 1-2s with graceful fallback
+- Pipeline stages: 15-45min per stage, 1h total
+
+**3. Quality Gate Semantics** (see `QUALITY_GATES.md`)
+- Unambiguous definitions for `all_pass`, `majority_pass`, `any_pass`, `weighted`
+- Concrete Given/When/Then examples for all gate types
+- SQL verification queries
+- Complete implementation reference with tests
+
+**Rationale:**
+- **Circuit breaker prevents cascading failures**: Without it, 10K records × 3 retries = 30K failed API calls overwhelming recovering service
+- **Timeouts prevent resource exhaustion**: Unbounded waits lead to thread pool exhaustion and cascading failures
+- **Quality gate precision enables correct implementation**: Ambiguous specifications lead to implementation errors and rework
+
+**Related Documents:**
+- `QUALITY_GATES.md` - Detailed quality gate specifications
+- `TIMEOUTS.md` - Complete timeout configuration
+- `loom/resilience/` - Circuit breaker and retry implementations
+
 ### Why YAML for Pipeline Definitions?
 
 **Decision:** Use YAML as the primary pipeline definition format.
@@ -2130,5 +2195,11 @@ This architecture document provides the complete technical design for Loom:
 6. **Deployment Architecture** - From local development to production Kubernetes
 7. **Integration Patterns** - Airflow, dbt, Jupyter, CI/CD integrations
 8. **Monitoring & Observability** - Metrics, logging, alerting strategies
+9. **Production Resilience** - Circuit breaker, timeouts, quality gate semantics
 
-This design is ready for Phase 1 implementation. See IMPLEMENTATION_SPEC.md for detailed implementation tasks.
+**Related Specifications:**
+- **IMPLEMENTATION_SPEC.md** - Detailed implementation tasks and SQL schemas
+- **QUALITY_GATES.md** - Precise quality gate semantics with executable examples
+- **TIMEOUTS.md** - Timeout specifications for all external operations
+
+This design is ready for Phase 1 implementation.

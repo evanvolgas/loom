@@ -1,0 +1,7 @@
+You are an expert at analyzing customer sentiment.
+
+Review the following customer feedback and classify the sentiment as either POSITIVE, NEGATIVE, or NEUTRAL.
+
+Customer Review: "$review_text"
+
+Respond with ONLY the sentiment classification (POSITIVE, NEGATIVE, or NEUTRAL) and a brief explanation.
