@@ -69,6 +69,8 @@ loom run customer_sentiment
 
 See [DESIGN_SPEC.md](DESIGN_SPEC.md) for complete architecture, examples, and roadmap.
 
+See [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md) for technical details, storage schema, and Phase 1 implementation plan.
+
 ## Relationship to Arbiter
 
 Loom **uses** [Arbiter](https://github.com/evanvolgas/arbiter) as its evaluation engine:
