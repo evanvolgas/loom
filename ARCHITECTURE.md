@@ -1889,15 +1889,122 @@ groups:
 
 ## Appendix: Design Decisions
 
-### Why Arbiter for Evaluation?
+### Why Arbiter as Hard Dependency?
 
-**Decision:** Use Arbiter as the evaluation engine rather than reimplementing.
+**Decision:** Loom has a hard dependency on Arbiter for evaluation (not pluggable in v1.0).
+
+**Context:** During design, we considered whether Loom should abstract evaluation backends (Arbiter, DeepEval, RAGAS, custom solutions) or use Arbiter directly. We chose hard dependency.
 
 **Rationale:**
-- **Separation of Concerns:** Arbiter focuses on "what" (evaluation quality), Loom focuses on "when/how" (orchestration)
-- **Avoid Duplication:** Arbiter already has evaluators, middleware, provider abstraction
-- **Composability:** Users can use Arbiter standalone or via Loom
-- **Maintenance:** One evaluation implementation to maintain
+
+**1. YAGNI Principle (You Aren't Gonna Need It)**
+- No proven demand for alternative evaluation frameworks yet
+- Both projects are alpha - no users requesting alternatives
+- Premature abstraction adds complexity without demonstrated value
+- Build abstractions when needed, not speculatively
+
+**2. Owned Dependency Benefits**
+- Both Arbiter and Loom are under same ownership
+- Can coordinate breaking changes across both codebases
+- Tight coupling enables faster co-evolution during early development
+- Iterate quickly without abstraction overhead
+
+**3. Development Velocity**
+- Hard dependency: Start Phase 1 implementation immediately
+- Pluggable backends: 2-3 weeks designing interfaces, adapters, normalization logic
+- At alpha stage, velocity matters more than flexibility
+- Focus on core value (orchestration), not abstraction architecture
+
+**4. Separation of Concerns**
+- Arbiter's value: Evaluation quality, multiple evaluator types, interaction tracking
+- Loom's value: Orchestration, lineage, cost tracking, quality gates
+- Loom uses Arbiter like it uses PostgreSQL (storage) or Redis (caching)
+- Don't reinvent evaluation - use best-in-class tool
+
+**5. Low Migration Risk**
+- Abstraction can be added in v2.0 if demand emerges
+- Migration path: Introduce `EvaluationBackend` interface, wrap Arbiter in `ArbiterBackend`
+- Default to `ArbiterBackend` - no breaking changes for existing users
+- Users who don't need custom backends see no difference
+
+**6. Complexity Avoidance**
+- Pluggable backends require ~100+ lines of abstraction code
+- Need result normalization across different frameworks (Arbiter, DeepEval, RAGAS have incompatible APIs)
+- Configuration complexity - each backend has different config schemas
+- Testing burden - validate against multiple backend implementations
+- Permanent maintenance cost even if never used
+
+**Learning from Others:**
+- **LangChain:** Over-abstraction created middleware sprawl and complexity burden
+- **Airflow/dbt:** Abstracted executors/adapters because execution environments are fundamentally diverse
+- **Evaluation:** Not yet proven diverse enough to warrant abstraction
+
+**The Relationship:**
+```
+Loom: Orchestration framework
+  ├── Extract: Data sources via connectors
+  ├── Transform: AI transformations via LLM clients
+  ├── Evaluate: Quality assessment via Arbiter (hard dependency)
+  └── Load: Data destinations via connectors
+
+Arbiter: Evaluation framework
+  ├── SemanticEvaluator: Similarity scoring
+  ├── CustomCriteriaEvaluator: Domain-specific evaluation
+  ├── PairwiseComparator: A/B testing
+  └── Extensible evaluator registry
+```
+
+**Implementation:**
+```toml
+# pyproject.toml
+[project]
+dependencies = [
+    "arbiter>=0.1.0",  # Hard dependency
+    # ...
+]
+```
+
+```python
+# loom/engines/evaluate.py
+from arbiter import evaluate  # Direct import
+
+class EvaluateEngine:
+    async def evaluate(self, output, reference, config):
+        result = await evaluate(
+            output=output,
+            reference=reference,
+            evaluators=config.evaluators,
+            model=config.model
+        )
+        return result
+```
+
+**Future Path (v2.0+):**
+If demand emerges for alternative evaluation backends:
+
+```python
+# Add abstraction without breaking changes
+class EvaluationBackend(ABC):
+    @abstractmethod
+    async def evaluate(...) -> EvaluationResult: pass
+
+class ArbiterBackend(EvaluationBackend):
+    """Default backend - wraps Arbiter"""
+    async def evaluate(...):
+        from arbiter import evaluate
+        return await evaluate(...)
+
+class CustomBackend(EvaluationBackend):
+    """User-provided backend"""
+    async def evaluate(...):
+        # Custom implementation
+        pass
+
+# Default to Arbiter - backward compatible
+backend = ArbiterBackend()  # Or: CustomBackend()
+```
+
+**Conclusion:** Hard dependency is the right choice for v1.0. It's not "too difficult" to abstract - it's "too early" to abstract. Let real-world usage patterns emerge before adding complexity.
 
 ### Why YAML for Pipeline Definitions?
 
