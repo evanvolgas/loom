@@ -71,6 +71,22 @@ loom run customer_sentiment
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive system design with component diagrams, API specs, and deployment patterns
 - **[IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md)** - Technical details, storage schema, and Phase 1 implementation plan
 
+## Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/evanvolgas/loom.git
+cd loom
+
+# Install dependencies
+uv venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+uv pip install -e ".[dev]"
+
+# Run tests
+pytest
+```
+
 ## Relationship to Arbiter
 
 Loom **uses** [Arbiter](https://github.com/evanvolgas/arbiter) as its evaluation engine:
