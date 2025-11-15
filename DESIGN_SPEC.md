@@ -8,7 +8,7 @@
 
 ## Vision
 
-**Loom is the orchestration framework for AI pipelines—the "dbt for AI(E)TL."**
+**Loom is the orchestration framework for AI pipelines - the "dbt for AI(E)TL."**
 
 ### The Problem
 
