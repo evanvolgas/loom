@@ -21,11 +21,14 @@
 > - Basic CLI (`loom run`, `loom validate`)
 >
 > **Coming Soon:**
+> - **Dec 2025**: More Arbiter evaluators (factuality, groundedness, relevance)
+> - **Feb-Mar 2026**: Enhanced factuality with external verification (Tavily, Wikipedia) - 95-98% accuracy
 > - Database connectors (Postgres, MySQL)
-> - More evaluators (factuality, relevance, toxicity)
 > - Cost tracking and observability
 > - Testing framework
 > - Better error messages and debugging
+>
+> See [docs/ARBITER_INTEGRATION_ROADMAP.md](docs/ARBITER_INTEGRATION_ROADMAP.md) for complete Arbiter integration timeline
 
 ---
 
@@ -95,6 +98,7 @@ loom run customer_sentiment
 - **[IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md)** - Technical details, storage schema, and Phase 1 implementation plan
 - **[QUALITY_GATES.md](QUALITY_GATES.md)** - Precise semantics for quality gate evaluation logic with executable examples
 - **[TIMEOUTS.md](TIMEOUTS.md)** - Timeout specifications for all external operations and resilience patterns
+- **[docs/ARBITER_INTEGRATION_ROADMAP.md](docs/ARBITER_INTEGRATION_ROADMAP.md)** - Arbiter integration timeline, evaluator availability, and accuracy roadmap
 
 ## Getting Started
 

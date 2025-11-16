@@ -721,15 +721,23 @@ transform:
   prompt: prompts/summarize_document.txt
   model: gpt-4o  # Use powerful model
 evaluate:
-  - factuality
-  - completeness
-  - no_hallucination
+  evaluators:
+    - type: factuality  # Available Dec 2025 (basic), Feb-Mar 2026 (enhanced with Tavily)
+      threshold: 0.85
+      config:
+        reference_field: source_document
+    - type: custom_criteria
+      criteria: "Complete, concise, no hallucination"
+      threshold: 0.75
+  quality_gate: all_pass
 load:
   destination: postgres://summaries
   on_failure: fallback  # Use extractive summary
 ```
 
 **Value:** Ensures high-quality summaries, catches hallucinations
+
+**Note:** Enhanced factuality evaluation with external verification (Tavily plugin) achieves 95-98% accuracy (Feb-Mar 2026). See [docs/ARBITER_INTEGRATION_ROADMAP.md](docs/ARBITER_INTEGRATION_ROADMAP.md)
 
 ### Use Case 3: RAG Pipeline Evaluation
 
@@ -743,15 +751,26 @@ transform:
   prompt: prompts/answer_question.txt
   context: {{ retrieved_documents }}
 evaluate:
-  - groundedness  # Answer supported by docs
-  - relevance     # Answers the question
-  - attribution   # Cites sources
+  evaluators:
+    - type: groundedness  # Available Dec 2025 - Answer supported by docs
+      threshold: 0.90
+      config:
+        source_documents_field: retrieved_documents
+    - type: relevance  # Available Dec 2025 - Answers the question
+      threshold: 0.80
+      config:
+        query_field: user_question
+    - type: custom_criteria
+      criteria: "Cites sources, answers completely"
+      threshold: 0.75
+  quality_gate: all_pass  # Must pass all
 load:
   destination: postgres://answers
-  quality_gate: all_pass  # Must pass all
 ```
 
 **Value:** Prevents hallucinated answers in RAG systems
+
+**Note:** GroundednessEvaluator and RelevanceEvaluator available Dec 2025. See [docs/ARBITER_INTEGRATION_ROADMAP.md](docs/ARBITER_INTEGRATION_ROADMAP.md)
 
 ---
 
