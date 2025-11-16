@@ -2,8 +2,8 @@
 
 **Purpose:** How AI agents should work with the Loom repository
 **Type:** Project Context (Layer 2 of 4-layer context framework)
-**Last Updated:** 2025-11-14
-**Status:** Design Complete, Implementation Starting
+**Last Updated:** 2025-11-16
+**Status:** Design Complete, Pre-Implementation
 
 ---
 
@@ -139,18 +139,18 @@ loom/
 │       └── pipelines/          # Test pipeline YAML files
 ├── examples/
 │   └── pipelines/              # Example pipeline definitions
-├── docs/                       # Documentation (future: MkDocs)
-├── pyproject.toml              # Project configuration (to be created)
-├── README.md                   # ✅ Project overview
-├── AGENTS.md                   # THIS FILE (Layer 2)
-├── PROJECT_TODO.md             # Current tasks (Layer 3, git-ignored)
-├── docs/                       # Documentation (design specs)
+├── docs/                       # Design specifications
 │   ├── DESIGN_SPEC.md          # ✅ Vision and architecture
 │   ├── ARCHITECTURE.md         # ✅ Detailed system design
 │   ├── IMPLEMENTATION_SPEC.md  # ✅ Technical implementation details
 │   ├── QUALITY_GATES.md        # ✅ Quality gate semantics
 │   ├── TIMEOUTS.md             # ✅ Timeout specifications
 │   └── ARBITER_INTEGRATION_ROADMAP.md  # ✅ Arbiter integration timeline
+├── pyproject.toml              # Project configuration (to be created)
+├── README.md                   # ✅ Project overview
+├── LICENSE                     # ✅ MIT License
+├── AGENTS.md                   # THIS FILE (Layer 2)
+├── PROJECT_TODO.md             # Current tasks (Layer 3, git-ignored)
 └── CONTRIBUTING.md             # Contribution guidelines (future)
 ```
 
@@ -759,4 +759,4 @@ If you're unsure about:
 
 ---
 
-**Last Updated:** 2025-11-14 | **Next Review:** When Phase 1 implementation begins
+**Last Updated:** 2025-11-16 | **Next Review:** When Phase 1 implementation begins
