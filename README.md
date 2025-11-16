@@ -87,17 +87,6 @@ loom run customer_sentiment
 - **✅ Quarantine Pattern**: Failed records logged with failure reasons for investigation
 - **✅ CLI Interface**: `loom run`, `loom validate` commands
 
-## Documentation
-
-**Current Phase:** Design
-
-- **[docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md)** - Vision, high-level architecture, and roadmap
-- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Comprehensive system design with component diagrams, API specs, and deployment patterns
-- **[docs/IMPLEMENTATION_SPEC.md](docs/IMPLEMENTATION_SPEC.md)** - Technical details, storage schema, and Phase 1 implementation plan
-- **[docs/QUALITY_GATES.md](docs/QUALITY_GATES.md)** - Precise semantics for quality gate evaluation logic with executable examples
-- **[docs/TIMEOUTS.md](docs/TIMEOUTS.md)** - Timeout specifications for all external operations and resilience patterns
-- **[docs/ARBITER_INTEGRATION_ROADMAP.md](docs/ARBITER_INTEGRATION_ROADMAP.md)** - Arbiter integration timeline, evaluator availability, and accuracy roadmap
-
 ## Getting Started
 
 ```bash
@@ -164,8 +153,6 @@ Separate projects, complementary goals.
 - [ ] DAG dependencies (multi-pipeline workflows)
 - [ ] Incremental processing
 - [ ] Streaming support (ByteWax integration)
-
-See [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md) for complete roadmap and architecture details.
 
 ## License
 
