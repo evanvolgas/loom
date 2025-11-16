@@ -1,34 +1,16 @@
-# Loom
+<div align="center">
+  <h1>Loom</h1>
 
-**Orchestration framework for AI pipelines with built-in evaluation**
+  <p><strong>Orchestration framework for AI pipelines with built-in evaluation</strong></p>
 
-> **⚠️ ALPHA SOFTWARE - ACTIVE DEVELOPMENT**
->
-> Loom is in early alpha stage. The API and features are rapidly evolving and **not yet stable**.
->
-> **Current Status:**
-> - ✅ **Phase 1 Complete**: Core pipeline engine working (Extract, Transform, Evaluate, Load)
-> - ⚠️ **API Stability**: Breaking changes expected
-> - 🚧 **Production Use**: Not recommended yet - use for experimentation only
-> - 📝 **Documentation**: Continuously improving
->
-> **What Works:**
-> - CSV/JSON/JSONL/Parquet extraction
-> - LLM transformation (OpenAI, Anthropic, Google, Groq)
-> - Arbiter evaluation with quality gates
-> - CSV/JSON/JSONL/Parquet loading
-> - Circuit breaker resilience
-> - Basic CLI (`loom run`, `loom validate`)
->
-> **Coming Soon:**
-> - **Dec 2025**: More Arbiter evaluators (factuality, groundedness, relevance)
-> - **Feb-Mar 2026**: Enhanced factuality with external verification (Tavily, Wikipedia) - 95-98% accuracy
-> - Database connectors (Postgres, MySQL)
-> - Cost tracking and observability
-> - Testing framework
-> - Better error messages and debugging
->
-> See [docs/ARBITER_INTEGRATION_ROADMAP.md](docs/ARBITER_INTEGRATION_ROADMAP.md) for complete Arbiter integration timeline
+  <p>
+    <a href="https://python.org"><img src="https://img.shields.io/badge/python-3.10+-blue" alt="Python"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+    <a href="https://github.com/evanvolgas/loom"><img src="https://img.shields.io/badge/version-0.1.0--alpha-blue" alt="Version"></a>
+  </p>
+
+  <p><em>⚠️ Alpha Software: Early development stage. Use for evaluation and experimentation.</em></p>
+</div>
 
 ---
 
@@ -38,23 +20,28 @@ Loom is the **"dbt for AI(E)TL"** - a declarative orchestration framework for AI
 
 Traditional ETL becomes AI(E)TL: **Extract → Transform → Evaluate → Load**
 
-Loom handles the orchestration with:
-- **Declarative YAML pipelines** → Define AI workflows as code
-- **Built-in evaluation** → Quality gates using [Arbiter](https://github.com/evanvolgas/arbiter)
-- **Prompt versioning** → Prompts as code, version-controlled
-- **Cost tracking** → Automatic token cost monitoring
-- **Testing framework** → Unit tests for prompts, distributional tests
-- **Semantic lineage** → Track prompts, models, context versions
+Declarative YAML pipelines with built-in quality gates ensure your AI outputs meet quality thresholds before reaching production.
+
+**Core Value**: Production-grade AI pipeline orchestration without complexity, vendor lock-in, or hidden evaluation gaps.
+
+**Status**: Alpha software (v0.1.0-alpha). Functional but early-stage. Best suited for evaluation, experimentation, and development.
 
 ## Why Loom?
 
-**The Problem:** No framework exists for declarative, testable, observable AI pipelines with built-in evaluation.
+**The Problem:** Building production AI pipelines requires orchestration AND evaluation. Existing tools do one or the other, not both.
 
-- **Airflow/Prefect**: Orchestrate workflows but don't understand AI evaluation
-- **LangChain**: LLM framework but not pipeline orchestration
-- **dbt**: Revolutionized SQL pipelines but doesn't handle probabilistic AI transforms
+**What Loom Provides:**
+- **Declarative Pipelines**: Define AI workflows as version-controlled YAML
+- **Built-in Evaluation**: Quality gates using [Arbiter](https://github.com/evanvolgas/arbiter) prevent bad outputs from reaching production
+- **Provider-Agnostic**: Works with OpenAI, Anthropic, Google, Groq - no vendor lock-in
+- **Production-Ready**: Circuit breakers, retry logic, timeout enforcement
 
-**The Solution:** Loom fills the gap.
+**Use Case Example:**
+A sentiment analysis pipeline needs quality assurance. Loom provides:
+1. Declarative YAML pipeline definition (Extract → Transform → Evaluate → Load)
+2. Automatic evaluation with configurable quality gates
+3. Quarantine pattern for failed records
+4. Complete audit trail of transformations and evaluations
 
 ## Quick Example
 
@@ -89,15 +76,26 @@ Run it:
 loom run customer_sentiment
 ```
 
+## Key Features
+
+- **✅ Declarative Pipelines**: YAML-based pipeline definitions (Extract, Transform, Evaluate, Load)
+- **✅ Built-in Evaluation**: Arbiter integration with quality gates (all_pass, majority_pass, any_pass, weighted)
+- **✅ Provider-Agnostic LLMs**: OpenAI, Anthropic, Google, Groq support
+- **✅ Multiple Data Formats**: CSV, JSON, JSONL, Parquet support
+- **✅ Quality Gates**: Four gate types with precise mathematical definitions
+- **✅ Circuit Breaker Pattern**: Production resilience for LLM calls
+- **✅ Quarantine Pattern**: Failed records logged with failure reasons for investigation
+- **✅ CLI Interface**: `loom run`, `loom validate` commands
+
 ## Documentation
 
 **Current Phase:** Design
 
-- **[DESIGN_SPEC.md](DESIGN_SPEC.md)** - Vision, high-level architecture, and roadmap
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive system design with component diagrams, API specs, and deployment patterns
-- **[IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md)** - Technical details, storage schema, and Phase 1 implementation plan
-- **[QUALITY_GATES.md](QUALITY_GATES.md)** - Precise semantics for quality gate evaluation logic with executable examples
-- **[TIMEOUTS.md](TIMEOUTS.md)** - Timeout specifications for all external operations and resilience patterns
+- **[docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md)** - Vision, high-level architecture, and roadmap
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Comprehensive system design with component diagrams, API specs, and deployment patterns
+- **[docs/IMPLEMENTATION_SPEC.md](docs/IMPLEMENTATION_SPEC.md)** - Technical details, storage schema, and Phase 1 implementation plan
+- **[docs/QUALITY_GATES.md](docs/QUALITY_GATES.md)** - Precise semantics for quality gate evaluation logic with executable examples
+- **[docs/TIMEOUTS.md](docs/TIMEOUTS.md)** - Timeout specifications for all external operations and resilience patterns
 - **[docs/ARBITER_INTEGRATION_ROADMAP.md](docs/ARBITER_INTEGRATION_ROADMAP.md)** - Arbiter integration timeline, evaluator availability, and accuracy roadmap
 
 ## Getting Started
@@ -126,20 +124,53 @@ Separate projects, complementary goals.
 
 ## Roadmap
 
-- **Phase 1**: Core pipeline engine (YAML parsing, basic Extract/Transform/Load)
-- **Phase 2**: Arbiter integration (evaluation gates, quality checks)
-- **Phase 3**: Observability & lineage (cost tracking, performance metrics)
-- **Phase 4**: Testing framework (unit tests, distributional tests)
-- **Phase 5**: Optimization (caching, batching, retries)
-- **Phase 6**: Monitoring & alerts (score degradation, cost spikes)
-- **Phase 7**: Advanced features (DAG dependencies, incremental processing)
+**Phase 1 - Foundation** ✅ (Completed)
+- [x] Core pipeline engine (Extract, Transform, Evaluate, Load)
+- [x] YAML pipeline parser
+- [x] Arbiter integration with quality gates
+- [x] Circuit breaker and resilience patterns
+- [x] Basic CLI (`loom run`, `loom validate`)
 
-See [DESIGN_SPEC.md](DESIGN_SPEC.md) for details.
+**Phase 2 - Data Connectors** 📋 (Planned - Q1 2026)
+- [ ] PostgreSQL source/destination
+- [ ] MySQL source/destination
+- [ ] Database connection pooling
+- [ ] Incremental extraction patterns
+
+**Phase 3 - Observability** 📋 (Planned - Q2 2026)
+- [ ] Automatic cost tracking (token usage, model costs)
+- [ ] Performance metrics (latency, throughput)
+- [ ] Semantic lineage (prompt versions, model changes)
+- [ ] Quality score monitoring
+
+**Phase 4 - Testing Framework** 📋 (Planned - Q2 2026)
+- [ ] Unit tests for pipeline components
+- [ ] Distributional tests for quality gates
+- [ ] Prompt testing patterns
+
+**Phase 5 - Optimization** 📋 (Planned - Q3 2026)
+- [ ] Semantic caching for duplicate inputs
+- [ ] Batch processing optimization
+- [ ] Smart retry logic
+- [ ] Cost optimization patterns
+
+**Phase 6 - Monitoring** 📋 (Planned - Q3 2026)
+- [ ] Score degradation alerts
+- [ ] Cost spike detection
+- [ ] Quality gate failure patterns
+- [ ] Model performance tracking
+
+**Phase 7 - Advanced Features** 📋 (Planned - Q4 2026)
+- [ ] DAG dependencies (multi-pipeline workflows)
+- [ ] Incremental processing
+- [ ] Streaming support (ByteWax integration)
+
+See [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md) for complete roadmap and architecture details.
 
 ## License
 
-MIT License
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
-Inspired by dbt, Airflow, and the need for better AI pipeline tooling.
+Inspired by dbt's declarative approach to data pipelines and built on top of [Arbiter](https://github.com/evanvolgas/arbiter) for evaluation.

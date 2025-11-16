@@ -101,7 +101,7 @@ This example uses `all_pass` quality gate:
 - **Semantic evaluator**: Checks if LLM output is semantically similar to expected sentiment
 - **Threshold**: 0.7 (70% similarity required)
 
-See `QUALITY_GATES.md` for detailed quality gate semantics.
+See `docs/QUALITY_GATES.md` for detailed quality gate semantics.
 
 ### Customization
 
@@ -139,4 +139,4 @@ evaluate:
 3. **Create pipeline YAML** in `examples/pipelines/`
 4. **Run**: `loom run examples/pipelines/your_pipeline.yaml`
 
-See `DESIGN_SPEC.md` for full pipeline specification.
+See `docs/DESIGN_SPEC.md` for full pipeline specification.

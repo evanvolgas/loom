@@ -75,11 +75,11 @@ Rules → Architecture → Status → Request
 **Expert Review Score:** 8.7/10
 
 ### Completed Work
-- ✅ DESIGN_SPEC.md - Vision and high-level architecture
-- ✅ ARCHITECTURE.md - Detailed system design with component diagrams
-- ✅ IMPLEMENTATION_SPEC.md - Technical details and Phase 1 plan
-- ✅ QUALITY_GATES.md - Precise quality gate semantics with examples
-- ✅ TIMEOUTS.md - Comprehensive timeout specifications
+- ✅ docs/DESIGN_SPEC.md - Vision and high-level architecture
+- ✅ docs/ARCHITECTURE.md - Detailed system design with component diagrams
+- ✅ docs/IMPLEMENTATION_SPEC.md - Technical details and Phase 1 plan
+- ✅ docs/QUALITY_GATES.md - Precise quality gate semantics with examples
+- ✅ docs/TIMEOUTS.md - Comprehensive timeout specifications
 - ✅ Circuit breaker pattern implementation (loom/resilience/)
 - ✅ Expert specification review with 5 domain experts
 
@@ -142,13 +142,15 @@ loom/
 ├── docs/                       # Documentation (future: MkDocs)
 ├── pyproject.toml              # Project configuration (to be created)
 ├── README.md                   # ✅ Project overview
-├── DESIGN_SPEC.md              # ✅ Vision and architecture
-├── ARCHITECTURE.md             # ✅ Detailed system design
-├── IMPLEMENTATION_SPEC.md      # ✅ Technical implementation details
-├── QUALITY_GATES.md            # ✅ Quality gate semantics
-├── TIMEOUTS.md                 # ✅ Timeout specifications
 ├── AGENTS.md                   # THIS FILE (Layer 2)
 ├── PROJECT_TODO.md             # Current tasks (Layer 3, git-ignored)
+├── docs/                       # Documentation (design specs)
+│   ├── DESIGN_SPEC.md          # ✅ Vision and architecture
+│   ├── ARCHITECTURE.md         # ✅ Detailed system design
+│   ├── IMPLEMENTATION_SPEC.md  # ✅ Technical implementation details
+│   ├── QUALITY_GATES.md        # ✅ Quality gate semantics
+│   ├── TIMEOUTS.md             # ✅ Timeout specifications
+│   └── ARBITER_INTEGRATION_ROADMAP.md  # ✅ Arbiter integration timeline
 └── CONTRIBUTING.md             # Contribution guidelines (future)
 ```
 
@@ -177,7 +179,7 @@ loom/
 - yaml_parser.py: Parse and validate pipeline YAML
 
 #### `quality_gates/` - Evaluation Gates
-**Purpose:** Implement quality gate logic from QUALITY_GATES.md
+**Purpose:** Implement quality gate logic from docs/QUALITY_GATES.md
 **Components:**
 - BaseQualityGate: Abstract interface
 - AllPassGate, MajorityPassGate, AnyPassGate, WeightedGate
@@ -252,9 +254,9 @@ git checkout -b feature/extract-engine
 
 #### Implementation Flow
 1. **Read Context:**
-   - DESIGN_SPEC.md (understand vision)
-   - ARCHITECTURE.md (understand system design)
-   - IMPLEMENTATION_SPEC.md (implementation details)
+   - docs/DESIGN_SPEC.md (understand vision)
+   - docs/ARCHITECTURE.md (understand system design)
+   - docs/IMPLEMENTATION_SPEC.md (implementation details)
    - PROJECT_TODO.md (check current milestone)
 
 2. **Plan:**
@@ -427,9 +429,9 @@ result = await evaluate(
 )
 ```
 
-### 3. Quality Gates from QUALITY_GATES.md (REQUIRED)
+### 3. Quality Gates from docs/QUALITY_GATES.md (REQUIRED)
 
-**Rule:** All quality gate implementations must match QUALITY_GATES.md specifications
+**Rule:** All quality gate implementations must match docs/QUALITY_GATES.md specifications
 
 **Implementation:**
 - Exact mathematical definitions
@@ -453,9 +455,9 @@ class AllPassQualityGate(QualityGate):
         return f"{len(failed)} evaluators below threshold"
 ```
 
-### 4. Timeout Enforcement from TIMEOUTS.md (REQUIRED)
+### 4. Timeout Enforcement from docs/TIMEOUTS.md (REQUIRED)
 
-**Rule:** All external operations must enforce timeouts from TIMEOUTS.md
+**Rule:** All external operations must enforce timeouts from docs/TIMEOUTS.md
 
 **Implementation:**
 - LLM calls: 30-60s (model-dependent)
@@ -547,11 +549,11 @@ def parse_yaml(path: str) -> Pipeline:
 ## Code Ownership
 
 ### Specifications (Read-Only, Change via PR)
-- DESIGN_SPEC.md
-- ARCHITECTURE.md
-- IMPLEMENTATION_SPEC.md
-- QUALITY_GATES.md
-- TIMEOUTS.md
+- docs/DESIGN_SPEC.md
+- docs/ARCHITECTURE.md
+- docs/IMPLEMENTATION_SPEC.md
+- docs/QUALITY_GATES.md
+- docs/TIMEOUTS.md
 
 ### Core Infrastructure (loom/core/, loom/resilience/)
 **Owner:** Architecture decisions
@@ -565,7 +567,7 @@ def parse_yaml(path: str) -> Pipeline:
 
 ### Quality Gates (loom/quality_gates/)
 **Owner:** Evaluation logic
-**Review:** Required (must match QUALITY_GATES.md)
+**Review:** Required (must match docs/QUALITY_GATES.md)
 **Critical:** Core feature
 
 ### CLI (loom/cli/)
@@ -580,9 +582,9 @@ def parse_yaml(path: str) -> Pipeline:
 ### When Starting Work
 
 1. **Read specifications:**
-   - DESIGN_SPEC.md (vision)
-   - ARCHITECTURE.md (system design)
-   - IMPLEMENTATION_SPEC.md (technical details)
+   - docs/DESIGN_SPEC.md (vision)
+   - docs/ARCHITECTURE.md (system design)
+   - docs/IMPLEMENTATION_SPEC.md (technical details)
    - PROJECT_TODO.md (current tasks)
 
 2. **Check git status:**
@@ -595,8 +597,8 @@ def parse_yaml(path: str) -> Pipeline:
 ### During Development
 
 1. **Follow specifications:**
-   - Quality gates match QUALITY_GATES.md
-   - Timeouts match TIMEOUTS.md
+   - Quality gates match docs/QUALITY_GATES.md
+   - Timeouts match docs/TIMEOUTS.md
    - Use circuit breaker for LLM calls
 
 2. **Write tests as you code** (not after)
@@ -630,7 +632,7 @@ def parse_yaml(path: str) -> Pipeline:
 
 ### Pattern 2: Adding a New Quality Gate
 
-*To be documented based on QUALITY_GATES.md implementations*
+*To be documented based on docs/QUALITY_GATES.md implementations*
 
 ### Pattern 3: Pipeline Definition
 
@@ -720,15 +722,16 @@ Before releasing:
 ## Related Documents
 
 ### Essential Reading (Priority Order)
-1. **DESIGN_SPEC.md** - What we're building and why (vision)
-2. **ARCHITECTURE.md** - How the system works (design)
-3. **IMPLEMENTATION_SPEC.md** - Technical implementation details
+1. **docs/DESIGN_SPEC.md** - What we're building and why (vision)
+2. **docs/ARCHITECTURE.md** - How the system works (design)
+3. **docs/IMPLEMENTATION_SPEC.md** - Technical implementation details
 4. **PROJECT_TODO.md** - Current milestone tasks (git-ignored)
 5. **AGENTS.md** - THIS FILE (how to work here)
 
 ### Specification Documents
-- **QUALITY_GATES.md** - Precise quality gate semantics with examples
-- **TIMEOUTS.md** - Comprehensive timeout specifications
+- **docs/QUALITY_GATES.md** - Precise quality gate semantics with examples
+- **docs/TIMEOUTS.md** - Comprehensive timeout specifications
+- **docs/ARBITER_INTEGRATION_ROADMAP.md** - Arbiter integration timeline
 - **loom/resilience/** - Circuit breaker and retry implementations
 
 ### Future Documents
@@ -746,10 +749,10 @@ Before releasing:
 ## Questions?
 
 If you're unsure about:
-- **Architecture:** Read DESIGN_SPEC.md and ARCHITECTURE.md
+- **Architecture:** Read docs/DESIGN_SPEC.md and docs/ARCHITECTURE.md
 - **Current work:** Check PROJECT_TODO.md
-- **Quality gates:** See QUALITY_GATES.md
-- **Timeouts:** See TIMEOUTS.md
+- **Quality gates:** See docs/QUALITY_GATES.md
+- **Timeouts:** See docs/TIMEOUTS.md
 - **Circuit breaker:** See loom/resilience/circuit_breaker.py
 
 **Still unclear?** Open an issue or ask in the PR.
