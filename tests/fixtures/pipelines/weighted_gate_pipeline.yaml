@@ -1,0 +1,38 @@
+name: weighted_quality_gate_test
+version: 1.0.0
+description: Pipeline with weighted quality gate for testing
+
+extract:
+  source: tests/fixtures/data/sample.json
+  source_type: json
+  batch_size: 10
+
+transform:
+  prompt: tests/fixtures/prompts/classify_sentiment.txt
+  model: gpt-4o-mini
+  provider: openai
+  batch_size: 5
+  temperature: 0.7
+  timeout: 60.0
+
+evaluate:
+  evaluators:
+    - name: semantic
+      type: semantic
+      threshold: 0.7
+      weight: 2.0
+    - name: criteria
+      type: custom_criteria
+      threshold: 0.75
+      weight: 1.0
+      criteria: "Is the sentiment classification accurate?"
+  quality_gate: weighted
+  quality_gate_threshold: 0.75
+  reference_field: expected_sentiment
+  timeout: 30.0
+
+load:
+  destination: tests/fixtures/output/weighted_results.json
+  destination_type: json
+  mode: overwrite
+  batch_size: 10
