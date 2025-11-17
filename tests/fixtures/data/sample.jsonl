@@ -1,0 +1,5 @@
+{"id": "1", "text": "This product is amazing! Best purchase ever.", "category": "product_review", "expected_sentiment": "positive"}
+{"id": "2", "text": "Terrible experience. Would not recommend.", "category": "product_review", "expected_sentiment": "negative"}
+{"id": "3", "text": "It's okay, nothing special but works fine.", "category": "product_review", "expected_sentiment": "neutral"}
+{"id": "4", "text": "Absolutely love it! Exceeded my expectations.", "category": "product_review", "expected_sentiment": "positive"}
+{"id": "5", "text": "Disappointed with the quality. Not worth the price.", "category": "product_review", "expected_sentiment": "negative"}

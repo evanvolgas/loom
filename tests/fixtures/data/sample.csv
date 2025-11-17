@@ -1,0 +1,6 @@
+id,text,category,expected_sentiment
+1,"This product is amazing! Best purchase ever.","product_review","positive"
+2,"Terrible experience. Would not recommend.","product_review","negative"
+3,"It's okay, nothing special but works fine.","product_review","neutral"
+4,"Absolutely love it! Exceeded my expectations.","product_review","positive"
+5,"Disappointed with the quality. Not worth the price.","product_review","negative"
