@@ -797,87 +797,41 @@ If you're unsure about:
 
 ---
 
-## Working with AI Agents: Lessons Learned
+## Working with AI Agents
 
-### Audience Context Recognition
-**Pattern**: When creating materials for specific audiences (engineers, researchers, business users), immediately adapt tone and content.
+### Task Management
+**Use TodoWrite for multi-step tasks**: When a task involves 3+ distinct steps, track progress with TodoWrite. This ensures nothing gets forgotten and provides visibility into progress.
 
-**Examples**:
-- **Engineering audiences** (technical meetups, developer docs) → Technical tone, no marketing language
-- **Business audiences** (executive presentations) → Focus on value, ROI, business impact
-- **Academic audiences** (research papers) → Methodology, rigor, citations
+**Plan before executing**: For complex tasks, create a plan first. Understand requirements, identify dependencies, then execute systematically.
 
-**Common mistakes**:
-- Using marketing language for technical audiences
-- Mixing presentation materials (narratives, talking points) with code examples
-- Defaulting to generic tone instead of contextualizing
+### Audience & Context Recognition
+**Recognize audience immediately**: Engineers get technical tone, no marketing language. Business audiences get value/ROI focus. Academic audiences get methodology and rigor. Adapt tone and content immediately based on context.
 
-**Fix**: Before creating content, ask: "Who is this for?" and adjust accordingly.
+**Separate material types**: Code examples stay clean (no narratives or marketing). Presentation materials (openers, talking points) live in separate files. Documentation explains architecture and usage patterns.
 
-### Code vs. Documentation Materials
-**Pattern**: Keep code examples and documentation/presentation materials strictly separated.
+### Quality & Testing
+**Test output quality, not just functionality**: Run code AND verify the output is actually useful. Truncated or abstracted output defeats the purpose of examples. Show real data structures, not summaries.
 
-**Code examples** (`examples/`):
-- Clean technical demonstrations
-- Self-contained, runnable
-- Show real data structures
-- No narratives or talking points
-- Full output, not truncated summaries
+**Verify before committing**: Run tests and verify examples work before showing output. Test both functionality and usefulness.
 
-**Documentation** (`docs/`, `README.md`):
-- Architecture explanations and design rationale
-- API references with usage examples
-- Setup instructions and configuration guides
-- Technical specifications
+**Connect work to strategy**: Explicitly reference project milestones, coverage targets, and strategic priorities when completing work. Celebrate milestones when achieved.
 
-**Common mistake**: Adding presentation narratives to code files (docstrings becoming mini-essays, marketing language in comments).
+### Workflow Patterns
+**Iterate fast**: Ship → test → get feedback → fix → commit. Don't perfect upfront. Progressive refinement beats upfront perfection.
 
-### Testing Output Quality
-**Pattern**: Test not just functionality, but output quality and usefulness.
+**Proactive problem solving**: Use tools like Glob to check file existence before execution. Anticipate common issues and handle them gracefully.
 
-When creating examples:
-1. Run the code to verify it works (functionality)
-2. Review the actual output to verify it's useful (quality)
-3. Check that output serves the example's purpose (effectiveness)
+**Parallel execution**: Batch independent operations (multiple reads, parallel test execution) to improve efficiency.
 
-**Example**: A debugging utility showing "first 200 chars" of data is functionally correct but useless for understanding what happened. Show full data instead.
+### Communication & Feedback
+**Direct feedback enables fast iteration**: Clear, immediate feedback on what's wrong enables rapid course correction. Specific, actionable requests work better than vague suggestions.
 
-### Iterative Refinement Over Perfection
-**Pattern**: Ship working version, get feedback, refine based on actual output.
+**Match user communication style**: Some users prefer speed over process formality, results over explanations. Adapt communication style accordingly while maintaining quality standards.
 
-**Effective workflow**:
-1. Create initial implementation
-2. Test it (run the code, verify output)
-3. Get feedback on real results
-4. Fix specific issues identified
-5. Commit, repeat
+### Git & Commit Hygiene
+**Commit hygiene**: Each meaningful change gets its own commit with clear message (what + why). This makes progress tracking and rollback easier.
 
-**Ineffective**: Try to anticipate all requirements upfront and build perfect solution before testing.
-
-### Direct Feedback Enables Fast Iteration
-**Pattern**: Clear, immediate feedback on what's wrong enables rapid course correction.
-
-**Effective feedback characteristics**:
-- **Direct**: "This has too much boilerplate" (clear what's wrong)
-- **Specific**: "Move this section after that one" (concrete action)
-- **Immediate**: Don't accumulate issues, address as they appear
-- **Contextual**: Reference prior conversation ("the approach we discussed earlier")
-
-**Why this works**: No ambiguity about what needs to change, minimal back-and-forth, fast feedback loops.
-
-### Commit Hygiene for Collaboration
-**Pattern**: Every meaningful change gets its own commit with clear message.
-
-**Benefits**:
-- Easy to track what changed when
-- Allows selective rollback if needed
-- Communicates progress through git log
-- Makes PR review easier
-
-**Good commit messages**:
-- What changed (files/features)
-- Why it changed (context)
-- Related issues or PRs
+**Clean git workflow**: Always check `git status` and `git branch` before operations. Use feature branches for all changes.
 
 ---
 
