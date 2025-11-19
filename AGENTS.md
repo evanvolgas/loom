@@ -797,4 +797,88 @@ If you're unsure about:
 
 ---
 
-**Last Updated:** 2025-11-16 | **Next Review:** After comprehensive test suite implementation
+## Working with AI Agents: Lessons Learned
+
+### Audience Context Recognition
+**Pattern**: When creating materials for specific audiences (engineers, researchers, business users), immediately adapt tone and content.
+
+**Examples**:
+- **Engineering audiences** (technical meetups, developer docs) → Technical tone, no marketing language
+- **Business audiences** (executive presentations) → Focus on value, ROI, business impact
+- **Academic audiences** (research papers) → Methodology, rigor, citations
+
+**Common mistakes**:
+- Using marketing language for technical audiences
+- Mixing presentation materials (narratives, talking points) with code examples
+- Defaulting to generic tone instead of contextualizing
+
+**Fix**: Before creating content, ask: "Who is this for?" and adjust accordingly.
+
+### Code vs. Documentation Materials
+**Pattern**: Keep code examples and documentation/presentation materials strictly separated.
+
+**Code examples** (`examples/`):
+- Clean technical demonstrations
+- Self-contained, runnable
+- Show real data structures
+- No narratives or talking points
+- Full output, not truncated summaries
+
+**Documentation** (`docs/`, `README.md`):
+- Architecture explanations and design rationale
+- API references with usage examples
+- Setup instructions and configuration guides
+- Technical specifications
+
+**Common mistake**: Adding presentation narratives to code files (docstrings becoming mini-essays, marketing language in comments).
+
+### Testing Output Quality
+**Pattern**: Test not just functionality, but output quality and usefulness.
+
+When creating examples:
+1. Run the code to verify it works (functionality)
+2. Review the actual output to verify it's useful (quality)
+3. Check that output serves the example's purpose (effectiveness)
+
+**Example**: A debugging utility showing "first 200 chars" of data is functionally correct but useless for understanding what happened. Show full data instead.
+
+### Iterative Refinement Over Perfection
+**Pattern**: Ship working version, get feedback, refine based on actual output.
+
+**Effective workflow**:
+1. Create initial implementation
+2. Test it (run the code, verify output)
+3. Get feedback on real results
+4. Fix specific issues identified
+5. Commit, repeat
+
+**Ineffective**: Try to anticipate all requirements upfront and build perfect solution before testing.
+
+### Direct Feedback Enables Fast Iteration
+**Pattern**: Clear, immediate feedback on what's wrong enables rapid course correction.
+
+**Effective feedback characteristics**:
+- **Direct**: "This has too much boilerplate" (clear what's wrong)
+- **Specific**: "Move this section after that one" (concrete action)
+- **Immediate**: Don't accumulate issues, address as they appear
+- **Contextual**: Reference prior conversation ("the approach we discussed earlier")
+
+**Why this works**: No ambiguity about what needs to change, minimal back-and-forth, fast feedback loops.
+
+### Commit Hygiene for Collaboration
+**Pattern**: Every meaningful change gets its own commit with clear message.
+
+**Benefits**:
+- Easy to track what changed when
+- Allows selective rollback if needed
+- Communicates progress through git log
+- Makes PR review easier
+
+**Good commit messages**:
+- What changed (files/features)
+- Why it changed (context)
+- Related issues or PRs
+
+---
+
+**Last Updated:** 2025-01-18 | **Next Review:** After comprehensive test suite implementation
