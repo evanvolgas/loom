@@ -21,8 +21,9 @@ class GlobalConfig(BaseModel):
     anthropic_api_key: Optional[str] = Field(
         default_factory=lambda: os.getenv("ANTHROPIC_API_KEY")
     )
-    google_api_key: Optional[str] = Field(
-        default_factory=lambda: os.getenv("GOOGLE_API_KEY")
+    # NOTE: PydanticAI uses GEMINI_API_KEY (not GOOGLE_API_KEY)
+    gemini_api_key: Optional[str] = Field(
+        default_factory=lambda: os.getenv("GEMINI_API_KEY")
     )
     groq_api_key: Optional[str] = Field(
         default_factory=lambda: os.getenv("GROQ_API_KEY")
