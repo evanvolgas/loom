@@ -113,6 +113,8 @@ Separate projects, complementary goals.
 
 ## Roadmap
 
+**Note:** This is a personal project. Roadmap items are ideas and explorations, not commitments. Priorities and timelines may change based on what's useful.
+
 **Phase 1 - Foundation** ✅ (Completed)
 - [x] Core pipeline engine (Extract, Transform, Evaluate, Load)
 - [x] YAML pipeline parser
@@ -120,39 +122,15 @@ Separate projects, complementary goals.
 - [x] Circuit breaker and resilience patterns
 - [x] Basic CLI (`loom run`, `loom validate`)
 
-**Phase 2 - Data Connectors** 📋 (Planned - Q1 2026)
-- [ ] PostgreSQL source/destination
-- [ ] MySQL source/destination
-- [ ] Database connection pooling
-- [ ] Incremental extraction patterns
-
-**Phase 3 - Observability** 📋 (Planned - Q2 2026)
-- [ ] Automatic cost tracking (token usage, model costs)
-- [ ] Performance metrics (latency, throughput)
-- [ ] Semantic lineage (prompt versions, model changes)
-- [ ] Quality score monitoring
-
-**Phase 4 - Testing Framework** 📋 (Planned - Q2 2026)
-- [ ] Unit tests for pipeline components
-- [ ] Distributional tests for quality gates
-- [ ] Prompt testing patterns
-
-**Phase 5 - Optimization** 📋 (Planned - Q3 2026)
+**Future Ideas** (No timeline, exploring as needed)
+- [ ] Database connectors (PostgreSQL, MySQL)
+- [ ] Cost tracking and monitoring
 - [ ] Semantic caching for duplicate inputs
-- [ ] Batch processing optimization
-- [ ] Smart retry logic
-- [ ] Cost optimization patterns
+- [ ] Smart retry logic with failure-type awareness
+- [ ] Testing framework for pipelines
+- [ ] More advanced monitoring and alerting
 
-**Phase 6 - Monitoring** 📋 (Planned - Q3 2026)
-- [ ] Score degradation alerts
-- [ ] Cost spike detection
-- [ ] Quality gate failure patterns
-- [ ] Model performance tracking
-
-**Phase 7 - Advanced Features** 📋 (Planned - Q4 2026)
-- [ ] DAG dependencies (multi-pipeline workflows)
-- [ ] Incremental processing
-- [ ] Streaming support (ByteWax integration)
+**Contributions welcome!** This is a personal project, but if you find it useful and want to contribute, pull requests are appreciated.
 
 ## License
 
