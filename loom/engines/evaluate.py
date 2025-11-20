@@ -221,13 +221,14 @@ class EvaluateEngine:
         tasks = [evaluate_with_semaphore(record) for record in records]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
-        # Handle exceptions
-        evaluated_records = []
+        # Handle exceptions and filter to Records only
+        evaluated_records: List[Record] = []
         for result in results:
             if isinstance(result, Exception):
                 logger.error(f"Batch evaluation failed: {type(result).__name__}: {result}")
                 raise EvaluateError(f"Batch evaluation failed: {result}")
-            evaluated_records.append(result)
+            elif isinstance(result, Record):
+                evaluated_records.append(result)
 
         passed_count = sum(1 for r in evaluated_records if r.quality_gate_passed)
         failed_count = sum(1 for r in evaluated_records if not r.quality_gate_passed and r.status != RecordStatus.ERROR)

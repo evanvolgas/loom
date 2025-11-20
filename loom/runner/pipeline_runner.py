@@ -10,6 +10,7 @@ from rich.progress import (
     BarColumn,
     Progress,
     SpinnerColumn,
+    TaskID,
     TextColumn,
     TimeElapsedColumn,
 )
@@ -158,7 +159,7 @@ class PipelineRunner:
             await self.transform_engine.close()
 
     async def _extract_stage(
-        self, progress: Progress, task_id
+        self, progress: Progress, task_id: TaskID
     ) -> tuple[List[Record], float]:
         """Execute extract stage.
 
@@ -172,7 +173,7 @@ class PipelineRunner:
         return records, elapsed
 
     async def _transform_stage(
-        self, records: List[Record], progress: Progress, task_id
+        self, records: List[Record], progress: Progress, task_id: TaskID
     ) -> tuple[List[Record], float]:
         """Execute transform stage.
 
@@ -186,7 +187,7 @@ class PipelineRunner:
         return transformed, elapsed
 
     async def _evaluate_stage(
-        self, records: List[Record], progress: Progress, task_id
+        self, records: List[Record], progress: Progress, task_id: TaskID
     ) -> tuple[List[Record], float]:
         """Execute evaluate stage.
 
@@ -200,7 +201,7 @@ class PipelineRunner:
         return evaluated, elapsed
 
     async def _load_stage(
-        self, records: List[Record], progress: Progress, task_id
+        self, records: List[Record], progress: Progress, task_id: TaskID
     ) -> tuple[int, float]:
         """Execute load stage.
 

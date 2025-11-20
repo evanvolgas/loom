@@ -126,15 +126,18 @@ class TransformEngine:
             client = await self._get_llm_client()
 
             # Call LLM with circuit breaker protection
-            async def llm_call():
-                async with asyncio.timeout(self.config.timeout):
-                    messages = [{"role": "user", "content": prompt}]
-                    response = await client.complete(
+            async def llm_call() -> str:
+                # Use asyncio.wait_for for Python 3.10+ compatibility
+                messages = [{"role": "user", "content": prompt}]
+                response = await asyncio.wait_for(
+                    client.complete(
                         messages=messages,
                         temperature=self.config.temperature,
                         max_tokens=self.config.max_tokens,
-                    )
-                    return response.content
+                    ),
+                    timeout=self.config.timeout,
+                )
+                return str(response.content)
 
             try:
                 transformed_text = await self.circuit_breaker.call(llm_call)
@@ -198,13 +201,14 @@ class TransformEngine:
         tasks = [transform_with_semaphore(record) for record in records]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
-        # Handle exceptions
-        transformed_records = []
+        # Handle exceptions and filter to Records only
+        transformed_records: List[Record] = []
         for result in results:
             if isinstance(result, Exception):
                 logger.error(f"Batch transform failed: {type(result).__name__}: {result}")
                 raise TransformError(f"Batch transform failed: {result}")
-            transformed_records.append(result)
+            elif isinstance(result, Record):
+                transformed_records.append(result)
 
         success_count = sum(1 for r in transformed_records if r.status == RecordStatus.TRANSFORMED)
         error_count = sum(1 for r in transformed_records if r.status == RecordStatus.ERROR)

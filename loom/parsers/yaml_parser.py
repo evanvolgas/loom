@@ -1,7 +1,7 @@
 """YAML pipeline definition parser."""
 
 from pathlib import Path
-from typing import Union
+from typing import Any, Dict, Union
 
 import yaml
 from pydantic import ValidationError as PydanticValidationError
@@ -72,7 +72,7 @@ def validate_pipeline(pipeline_path: Union[str, Path]) -> bool:
         return False
 
 
-def parse_pipeline_from_dict(data: dict) -> PipelineConfig:
+def parse_pipeline_from_dict(data: Dict[str, Any]) -> PipelineConfig:
     """Parse pipeline configuration from dictionary.
 
     Args:

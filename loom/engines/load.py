@@ -197,8 +197,11 @@ class LoadEngine:
             combined_df = pl.concat([existing_df, df])
             combined_df.write_json(path)
         elif self.destination_type == DestinationType.JSONL:
-            # JSONL append: just append lines
-            df.write_ndjson(path, append=True)
+            # JSONL append: read existing, concat, write
+            # Note: Polars write_ndjson doesn't support append parameter
+            existing_df = pl.read_ndjson(path)
+            combined_df = pl.concat([existing_df, df])
+            combined_df.write_ndjson(path)
         elif self.destination_type == DestinationType.PARQUET:
             existing_df = pl.read_parquet(path)
             combined_df = pl.concat([existing_df, df])

@@ -16,14 +16,14 @@ console = Console()
 
 @click.group()
 @click.version_option(version=__version__, prog_name="loom")
-def cli():
+def cli() -> None:
     """Loom - Declarative orchestration for AI pipelines."""
     pass
 
 
 @cli.command()
 @click.argument("pipeline_path", type=click.Path(exists=True))
-def run(pipeline_path: str):
+def run(pipeline_path: str) -> None:
     """Run a pipeline from YAML definition.
 
     Example:
@@ -65,7 +65,7 @@ def run(pipeline_path: str):
 
 @cli.command()
 @click.argument("pipeline_path", type=click.Path(exists=True))
-def validate(pipeline_path: str):
+def validate(pipeline_path: str) -> None:
     """Validate a pipeline YAML definition.
 
     Example:
@@ -95,7 +95,7 @@ def validate(pipeline_path: str):
 
 
 @cli.command()
-def version():
+def version() -> None:
     """Show Loom version."""
     console.print(f"Loom version {__version__}")
 

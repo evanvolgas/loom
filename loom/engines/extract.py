@@ -105,11 +105,8 @@ class ExtractEngine:
             df = pl.read_json(path)
         elif self.source_type == SourceType.JSONL:
             df = pl.read_ndjson(path)
-        elif self.source_type == SourceType.PARQUET:
+        else:  # SourceType.PARQUET
             df = pl.read_parquet(path)
-        else:
-            logger.error(f"Unsupported source type: {self.source_type}")
-            raise ExtractError(f"Unsupported source type: {self.source_type}")
 
         logger.debug(f"DataFrame loaded: {len(df)} rows, {len(df.columns)} columns")
 
