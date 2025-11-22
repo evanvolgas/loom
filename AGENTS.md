@@ -1,8 +1,13 @@
+---
+name: loom-agent
+description: LLM-powered data pipeline framework developer
+---
+
 # AGENTS.md - Project Context (Layer 2)
 
 **Purpose:** How AI agents should work with the Loom repository
 **Type:** Project Context (Layer 2 of 4-layer context framework)
-**Last Updated:** 2025-11-16
+**Last Updated:** 2025-01-21
 **Status:** Phase 1 Complete, Testing In Progress
 
 ---
@@ -277,6 +282,46 @@ loom/
 
 ---
 
+## Boundaries
+
+### ✅ Always Do (No Permission Needed)
+- Run tests: `pytest`, `pytest --cov=loom`, `pytest -v`
+- Format code: `black loom/`
+- Lint code: `ruff check loom/`
+- Type check: `mypy loom/` (strict mode required)
+- Add unit tests for new engines in `tests/unit/`
+- Add integration tests for pipeline flows in `tests/integration/`
+- Update docstrings when changing function signatures
+- Export new components in `__init__.py` files
+- Add test fixtures for new data formats in `tests/fixtures/`
+- Create example pipelines in `examples/pipelines/`
+
+### ⚠️ Ask First
+- Add new engines to `loom/engines/`
+- Modify core models in `loom/core/models.py` (Pipeline, Record, Stage)
+- Change quality gate logic in `loom/quality_gates/` (must match docs/QUALITY_GATES.md)
+- Add/update dependencies in `pyproject.toml`
+- Modify timeout specifications (must align with docs/TIMEOUTS.md)
+- Change circuit breaker configuration in `loom/resilience/circuit_breaker.py`
+- Add new storage backends in `loom/storage/`
+- Modify YAML pipeline parser in `loom/parsers/yaml_parser.py`
+- Change CLI commands in `loom/cli/main.py`
+- Update specification documents in `docs/` (DESIGN_SPEC.md, ARCHITECTURE.md, etc.)
+
+### 🚫 Never Touch
+- `.env` files or API keys (use environment variables)
+- Production deployment configurations
+- Git history manipulation (no force push, interactive rebase on shared branches)
+- User's `~/.claude/` configuration files
+- Any files outside the `loom/` repository
+- Specification documents without PR review (docs/DESIGN_SPEC.md, docs/QUALITY_GATES.md, etc.)
+- Test files to make them pass (fix the code, not the tests)
+- Type checking strictness settings in `pyproject.toml`
+- Coverage thresholds (must maintain >80%)
+- Arbiter dependency implementation (hard dependency, non-negotiable)
+
+---
+
 ## Development Workflow
 
 ### 1. Feature Development
@@ -342,17 +387,26 @@ git checkout -b feature/extract-engine
 
 **Running Tests:**
 ```bash
-# All tests with coverage
+# All tests with coverage (requires >80%, shows missing lines)
 pytest --cov=loom --cov-report=term-missing
 
-# Specific test file
-pytest tests/unit/test_extract.py
+# Specific test file with verbose output
+pytest tests/unit/test_extract.py -v
 
-# Fast (unit only)
+# Fast unit tests only (mocked dependencies, <1s per test)
 pytest tests/unit/
 
-# With verbose output
+# Integration tests only (end-to-end pipeline flows)
+pytest tests/integration/
+
+# Verbose output (shows test names and pass/fail status)
 pytest -v
+
+# Run tests matching specific pattern
+pytest -k "test_circuit_breaker" -v
+
+# Quiet mode (minimal output, only failures)
+pytest -q
 ```
 
 ### 3. Code Quality Standards
