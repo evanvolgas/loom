@@ -309,6 +309,15 @@ loom/
 - Update specification documents in `docs/` (DESIGN_SPEC.md, ARCHITECTURE.md, etc.)
 
 ### 🚫 Never Touch
+
+**CRITICAL SECURITY VIOLATION** ⚠️:
+- **NEVER EVER COMMIT CREDENTIALS TO GITHUB**
+- No API keys, tokens, passwords, secrets in ANY file
+- No credentials in code, documentation, examples, tests, or configuration files
+- Use environment variables (.env files in .gitignore) ONLY
+- This is NON-NEGOTIABLE - violating this rule has serious security consequences
+
+**Other Prohibitions**:
 - `.env` files or API keys (use environment variables)
 - Production deployment configurations
 - Git history manipulation (no force push, interactive rebase on shared branches)
