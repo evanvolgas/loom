@@ -12,6 +12,32 @@ description: LLM-powered data pipeline framework developer
 
 ---
 
+## Quick Start (First Session Commands)
+
+**New to this repo? Run these 5 commands first:**
+
+```bash
+# 1. Verify you're on a feature branch (NEVER work on main)
+git status && git branch
+
+# 2. Run all quality checks
+pytest --cov=loom --cov-report=term-missing
+mypy loom/
+ruff check loom/
+black loom/
+
+# 3. Run specific engine test to verify environment
+pytest tests/unit/test_circuit_breaker.py -v
+
+# 4. Check for any TODOs or placeholders (should be NONE)
+grep -r "TODO\|FIXME\|NotImplementedError" loom/ || echo "✅ No placeholders found"
+
+# 5. Verify coverage is >80%
+pytest --cov=loom | tail -1
+```
+
+---
+
 ## Four-Layer Context Framework
 
 This repository uses a four-layer context system for AI agent interactions:
@@ -69,6 +95,53 @@ Rules → Architecture → Status → Request
 - **Project:** "Use Arbiter for all evaluation logic"
 - **Running:** "Currently implementing ExtractEngine"
 - **Prompt:** "Add CSV file support to ExtractEngine"
+
+---
+
+## Session Analysis & Continuous Improvement
+
+**When to Analyze** (Multiple Triggers):
+- During active sessions: After completing major tasks or every 30-60 minutes
+- When failures occur: Immediately analyze and update rules
+- Session end: Review entire session for patterns before closing
+- User corrections: Any time user points out a mistake
+
+**Identify Failures**:
+- Framework violations (boundaries crossed, rules ignored)
+- Repeated patterns (same mistake multiple times)
+- Rules that didn't prevent failures
+- User corrections (what needed fixing)
+
+**Analyze Each Failure**:
+- What rule should have prevented this?
+- Why didn't it work? (too vague, wrong priority, missing detection pattern)
+- What would have caught this earlier?
+
+**Update AGENTS.md** (In Real-Time):
+- Add new rules or strengthen existing rules immediately
+- Add detection patterns (git commands, test patterns, code patterns)
+- Include examples of violations and corrections
+- Update priority if rule was underweighted
+- Propose updates to user during session (don't wait until end)
+
+**Priority Levels**:
+- 🔴 **CRITICAL**: Security, credentials, production breaks → Update immediately, stop work
+- 🟡 **IMPORTANT**: Framework violations, repeated patterns → Update with detection patterns, continue work
+- 🟢 **RECOMMENDED**: Code quality, style issues → Update with examples, lowest priority
+
+**Example Pattern**:
+```
+Failure: Committed TODO comments in production code (violated "No Partial Features" rule)
+Detection: `grep -r "TODO" src/` before commit
+Rule Update: Add pre-commit check pattern to Boundaries section
+Priority: 🟡 IMPORTANT
+Action Taken: Proposed rule update to user mid-session, updated AGENTS.md
+```
+
+**Proactive Analysis**:
+- Before risky operations: Check if existing rules cover this scenario
+- After 3+ similar operations: Look for pattern that should be codified
+- When uncertainty arises: Document the decision-making gap
 
 ---
 
@@ -297,16 +370,22 @@ loom/
 - Create example pipelines in `examples/pipelines/`
 
 ### ⚠️ Ask First
-- Add new engines to `loom/engines/`
-- Modify core models in `loom/core/models.py` (Pipeline, Record, Stage)
-- Change quality gate logic in `loom/quality_gates/` (must match docs/QUALITY_GATES.md)
-- Add/update dependencies in `pyproject.toml`
-- Modify timeout specifications (must align with docs/TIMEOUTS.md)
-- Change circuit breaker configuration in `loom/resilience/circuit_breaker.py`
-- Add new storage backends in `loom/storage/`
-- Modify YAML pipeline parser in `loom/parsers/yaml_parser.py`
-- Change CLI commands in `loom/cli/main.py`
-- Update specification documents in `docs/` (DESIGN_SPEC.md, ARCHITECTURE.md, etc.)
+
+**Core Architecture** (Why: Affects all pipeline components):
+- Add new engines to `loom/engines/` - Breaks pipeline stage pattern
+- Modify core models in `loom/core/models.py` (Pipeline, Record, Stage) - All engines depend on these
+- Change quality gate logic in `loom/quality_gates/` - Must match docs/QUALITY_GATES.md specifications
+- Modify YAML pipeline parser in `loom/parsers/yaml_parser.py` - Changes how all pipelines are defined
+
+**Resilience & Timeouts** (Why: Affects reliability and production behavior):
+- Modify timeout specifications - Must align with docs/TIMEOUTS.md
+- Change circuit breaker configuration in `loom/resilience/circuit_breaker.py` - Affects failure handling
+- Add new storage backends in `loom/storage/` - Data persistence implications
+
+**Dependencies & Config** (Why: Security and maintenance burden):
+- Add/update dependencies in `pyproject.toml` - Increases attack surface
+- Change CLI commands in `loom/cli/main.py` - User-facing interface changes
+- Update specification documents in `docs/` - Design decisions affecting architecture
 
 ### 🚫 Never Touch
 
@@ -328,6 +407,24 @@ loom/
 - Type checking strictness settings in `pyproject.toml`
 - Coverage thresholds (must maintain >80%)
 - Arbiter dependency implementation (hard dependency, non-negotiable)
+
+**Detection Commands** (Run before committing):
+```bash
+# Check for security violations
+grep -r "API_KEY\|SECRET\|PASSWORD" loom/ tests/ examples/ && echo "🚨 CREDENTIALS FOUND" || echo "✅ No credentials"
+
+# Check for code quality violations
+grep -r "TODO\|FIXME" loom/ && echo "🚨 TODO comments found" || echo "✅ No TODOs"
+
+# Check for incomplete features
+grep -r "NotImplementedError\|pass  # TODO" loom/ && echo "🚨 Placeholder code found" || echo "✅ No placeholders"
+
+# Verify on feature branch
+git branch --show-current | grep -E "^(main|master)$" && echo "🚨 ON MAIN BRANCH - CREATE FEATURE BRANCH" || echo "✅ On feature branch"
+
+# Verify coverage >80%
+pytest --cov=loom 2>&1 | grep "TOTAL" | awk '{if ($NF+0 < 80) print "🚨 COVERAGE " $NF " < 80%"; else print "✅ Coverage " $NF}'
+```
 
 ---
 
@@ -484,6 +581,87 @@ async def extract_records(
         >>> print(len(records))
         1000
     """
+```
+
+---
+
+## Common Mistakes & How to Avoid Them
+
+### Mistake 1: Working on main/master Branch
+**Detection**: `git branch --show-current`
+**Prevention**: Always create feature branch before starting work
+**Fix**: `git checkout -b feature/my-feature`
+**Why It Matters**: Direct main commits break team workflow and review process
+
+### Mistake 2: Skipping Tests to Make Build Pass
+**Detection**: `git diff` shows deleted/commented test code
+**Prevention**: Fix the code, not the tests
+**Fix**: Debug failing tests, fix implementation
+**Why It Matters**: Tests catch bugs - removing them hides problems
+
+### Mistake 3: Adding Dependencies Without Consideration
+**Detection**: `git diff pyproject.toml` shows new dependencies
+**Prevention**: Ask first before adding dependencies
+**Fix**: Justify dependency, ensure it's necessary, check for security issues
+**Why It Matters**: Dependencies increase attack surface and maintenance burden
+
+### Mistake 4: Mixing Sync and Async Code
+**Detection**: `grep -r "def.*async" loom/` vs `grep -r "^def" loom/`
+**Prevention**: Use async throughout pipeline stages
+**Fix**: Convert sync functions to async: `async def` with `await`
+**Why It Matters**: Loom uses async/await for pipeline efficiency
+
+### Mistake 5: Leaving TODO Comments in Production Code
+**Detection**: `grep -r "TODO\|FIXME" loom/`
+**Prevention**: Complete features before committing
+**Fix**: Remove TODOs, implement features fully
+**Why It Matters**: Placeholders indicate incomplete work
+
+### Mistake 6: Using `Any` Type Without Justification
+**Detection**: `grep -r "from typing import Any" loom/`
+**Prevention**: Use specific Pydantic models for type safety
+**Fix**: Create Pydantic model for structure
+**Why It Matters**: Type safety prevents bugs, strict mypy enforced
+
+### Mistake 7: Ignoring Test Coverage Drop
+**Detection**: `pytest --cov=loom` shows coverage <80%
+**Prevention**: Write tests as you code, not after
+**Fix**: Add tests until coverage >80%
+**Why It Matters**: Untested code will break in production
+
+---
+
+## Testing Decision Matrix
+
+**When to Mock:**
+- Arbiter evaluation calls - Use mocked responses to avoid API costs
+- LLM API calls (Arbiter integration) - Mock for unit tests
+- File I/O for storage backends - Use temporary directories
+- External database connections - Mock for unit tests
+
+**When to Use Real Dependencies:**
+- Pydantic validation - Real validation catches schema bugs
+- Pipeline stage execution - Real orchestration tests
+- Circuit breaker logic - Real state machine behavior
+- Quality gate calculations - Real math operations
+
+**Example:**
+```python
+# ✅ GOOD - Mock Arbiter call
+@pytest.mark.asyncio
+async def test_evaluate_engine_mocked(mocker):
+    mocker.patch("loom.engines.evaluate.arbiter.evaluate")
+    engine = EvaluateEngine()
+    # Test logic without hitting real Arbiter API
+
+# ✅ GOOD - Real Pydantic validation
+def test_pipeline_validation():
+    pipeline = Pipeline(name="test", stages=[...])
+    assert pipeline.name == "test"  # Real validation
+
+# ❌ BAD - Using real Arbiter API in tests
+async def test_evaluator():
+    result = await evaluate(output="test")  # Costs money, hits real API!
 ```
 
 ---
@@ -715,12 +893,37 @@ def parse_yaml(path: str) -> Pipeline:
 
 ### Before Committing
 
-1. **Run full test suite:** `pytest --cov=loom`
-2. **Check type safety:** `mypy loom/`
-3. **Lint code:** `ruff check loom/`
-4. **Format code:** `black loom/`
-5. **Update __init__.py** exports if needed
-6. **Update PROJECT_TODO.md** checkbox
+**Pre-Commit Validation (Run ALL these checks):**
+```bash
+# 1. Run full test suite with coverage
+pytest --cov=loom --cov-report=term-missing
+if [ $? -ne 0 ]; then echo "🚨 TESTS FAILED OR COVERAGE <80%"; exit 1; fi
+
+# 2. Check type safety
+mypy loom/
+if [ $? -ne 0 ]; then echo "🚨 TYPE ERRORS - FIX BEFORE COMMIT"; exit 1; fi
+
+# 3. Lint code
+ruff check loom/
+if [ $? -ne 0 ]; then echo "🚨 LINT ERRORS - FIX BEFORE COMMIT"; exit 1; fi
+
+# 4. Format code
+black loom/
+
+# 5. No TODOs or placeholders
+grep -r "TODO\|FIXME\|NotImplementedError" loom/ && echo "🚨 REMOVE TODOs" && exit 1
+
+# 6. No credentials
+grep -r "API_KEY\|SECRET\|PASSWORD" loom/ tests/ examples/ && echo "🚨 CREDENTIALS FOUND" && exit 1
+
+# 7. Update __init__.py exports if needed
+# Manually verify new components are exported
+
+# All checks passed
+echo "✅ All checks passed - ready to commit"
+git add <files>
+git commit -m "Clear message"
+```
 
 ### After Completing Feature
 
