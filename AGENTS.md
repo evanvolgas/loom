@@ -331,6 +331,12 @@ loom/
 
 ---
 
+## Communication Preferences
+
+Don't flatter me. I know what [AI sycophancy](https://www.seangoedecke.com/ai-sycophancy/) is and I don't want your praise. Be concise and direct. Don't use emdashes ever.
+
+---
+
 ## Development Workflow
 
 ### 1. Feature Development
