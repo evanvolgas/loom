@@ -32,7 +32,7 @@ Declarative YAML pipelines with built-in quality gates ensure your AI outputs me
 
 **What Loom Provides:**
 - **Declarative Pipelines**: Define AI workflows as version-controlled YAML
-- **Built-in Evaluation**: Quality gates using [Arbiter](https://github.com/evanvolgas/arbiter) prevent bad outputs from reaching production
+- **Built-in Evaluation**: Quality gates using [Arbiter](https://github.com/ashita-ai/arbiter) prevent bad outputs from reaching production
 - **Provider-Agnostic**: Works with OpenAI, Anthropic, Google, Groq - no vendor lock-in
 - **Production-Ready**: Circuit breakers, retry logic, timeout enforcement
 
@@ -105,7 +105,7 @@ pytest
 
 ## Relationship to Arbiter
 
-Loom **uses** [Arbiter](https://github.com/evanvolgas/arbiter) as its evaluation engine:
+Loom **uses** [Arbiter](https://github.com/ashita-ai/arbiter) as its evaluation engine:
 - **Arbiter**: Evaluates individual LLM outputs (what)
 - **Loom**: Orchestrates pipelines with evaluation gates (when/how)
 
@@ -138,4 +138,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
-Inspired by dbt's declarative approach to data pipelines and built on top of [Arbiter](https://github.com/evanvolgas/arbiter) for evaluation.
+Inspired by dbt's declarative approach to data pipelines and built on top of [Arbiter](https://github.com/ashita-ai/arbiter) for evaluation.

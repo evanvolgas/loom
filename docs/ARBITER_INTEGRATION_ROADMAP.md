@@ -8,7 +8,7 @@
 
 ## Overview
 
-This document tracks Loom's integration with [Arbiter](https://github.com/evanvolgas/arbiter), the production-grade LLM evaluation framework. Arbiter serves as Loom's evaluation engine, providing quality gates for AI pipelines.
+This document tracks Loom's integration with [Arbiter](https://github.com/ashita-ai/arbiter), the production-grade LLM evaluation framework. Arbiter serves as Loom's evaluation engine, providing quality gates for AI pipelines.
 
 **Key Relationship:**
 - **Arbiter**: Evaluates individual LLM outputs (what to evaluate)
@@ -480,7 +480,7 @@ evaluate:
 
 ## Related Documentation
 
-- **Arbiter Repository:** https://github.com/evanvolgas/arbiter
+- **Arbiter Repository:** https://github.com/ashita-ai/arbiter
 - **Arbiter DESIGN_SPEC.md:** Vision and architecture
 - **Arbiter ROADMAP.md:** Full development timeline
 - **Arbiter Tools Architecture:** `/arbiter/docs/TOOLS_PLUGIN_ARCHITECTURE.md`
@@ -492,7 +492,7 @@ evaluate:
 ## Questions & Feedback
 
 **For Arbiter Issues:**
-- Repository: https://github.com/evanvolgas/arbiter/issues
+- Repository: https://github.com/ashita-ai/arbiter/issues
 
 **For Loom Integration:**
 - Repository: https://github.com/evanvolgas/loom/issues
