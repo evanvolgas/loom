@@ -10,6 +10,8 @@ description: LLM-powered data pipeline framework developer
 **Last Updated:** 2025-01-22
 **Status:** Phase 1 Complete, Testing In Progress
 
+**Design Philosophy**: Simplicity wins, use good defaults, YAML config where needed, no hardcoded assumptions.
+
 ---
 
 ## Quick Start (First Session Commands)
