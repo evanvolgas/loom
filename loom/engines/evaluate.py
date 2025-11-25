@@ -4,7 +4,7 @@ import asyncio
 import logging
 from typing import List
 
-from arbiter import evaluate as arbiter_evaluate
+from arbiter_ai import evaluate as arbiter_evaluate
 
 from loom.core.exceptions import EvaluateError
 from loom.core.models import EvaluateConfig, Record

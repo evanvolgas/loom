@@ -6,7 +6,7 @@ from pathlib import Path
 from string import Template
 from typing import List, Optional
 
-from arbiter.core.llm_client import LLMClient
+from arbiter_ai.core.llm_client import LLMClient
 
 from loom.core.exceptions import ConfigurationError, TransformError
 from loom.core.models import Record, TransformConfig
@@ -77,7 +77,7 @@ class TransformEngine:
             Initialized LLM client
         """
         if self.llm_client is None:
-            from arbiter.core.llm_client import LLMManager
+            from arbiter_ai.core.llm_client import LLMManager
 
             logger.debug(f"Initializing LLM client: model={self.config.model}")
             self.llm_client = await LLMManager.get_client(
@@ -223,6 +223,6 @@ class TransformEngine:
         """Clean up resources."""
         if self.llm_client:
             logger.debug("Closing LLM client")
-            from arbiter.core.llm_client import LLMManager
+            from arbiter_ai.core.llm_client import LLMManager
             await LLMManager.close()
             logger.info("LLM client closed")
