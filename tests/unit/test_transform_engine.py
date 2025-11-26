@@ -111,7 +111,7 @@ class TestTransformEngine:
 
         mock_llm_manager = MagicMock()
         mock_llm_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
-        mocker.patch("arbiter.core.llm_client.LLMManager", mock_llm_manager)
+        mocker.patch("arbiter_ai.core.llm_client.LLMManager", mock_llm_manager)
 
         # First call should initialize client
         client1 = await engine._get_llm_client()
@@ -149,7 +149,7 @@ class TestTransformEngine:
 
         mock_llm_manager = MagicMock()
         mock_llm_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
-        mocker.patch("arbiter.core.llm_client.LLMManager", mock_llm_manager)
+        mocker.patch("arbiter_ai.core.llm_client.LLMManager", mock_llm_manager)
 
         record = Record(
             id="test_1",
@@ -191,7 +191,7 @@ class TestTransformEngine:
         async def mock_get_client_func(**kwargs):
             return mock_client
 
-        mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+        mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
         mock_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
 
         record = Record(id="test_1", data={"text": "Great!"})
@@ -222,7 +222,7 @@ class TestTransformEngine:
         async def mock_get_client_func(**kwargs):
             return mock_client
 
-        mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+        mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
         mock_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
 
         record = Record(id="test_1", data={"text": "Test"})
@@ -254,7 +254,7 @@ class TestTransformEngine:
         async def mock_get_client_func(**kwargs):
             return mock_client
 
-        mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+        mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
         mock_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
 
         record = Record(id="test_1", data={"text": "Test"})
@@ -276,7 +276,7 @@ class TestTransformEngine:
         mock_client = AsyncMock()
         mock_client.complete.side_effect = Exception("LLM API error")
 
-        mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+        mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
         mock_manager.get_client.return_value = mock_client
 
         record = Record(id="test_1", data={"text": "Test"})
@@ -314,7 +314,7 @@ class TestTransformEngine:
         async def mock_get_client_func(**kwargs):
             return mock_client
 
-        mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+        mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
         mock_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
 
         records = [
@@ -363,7 +363,7 @@ class TestTransformEngine:
         async def mock_get_client_func(**kwargs):
             return mock_client
 
-        mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+        mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
         mock_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
 
         records = [
@@ -424,7 +424,7 @@ class TestTransformEngine:
         async def mock_close_func():
             pass
 
-        mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+        mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
         mock_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
         mock_manager.close = AsyncMock(side_effect=mock_close_func)
 
@@ -456,7 +456,7 @@ class TestTransformEngine:
             async def mock_get_client_func(**kwargs):
                 return mock_client
 
-            mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+            mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
             mock_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
 
             record = Record(id="test_1", data={"text": "Great!"})
@@ -487,7 +487,7 @@ class TestTransformEngine:
             async def mock_get_client_func(**kwargs):
                 return mock_client
 
-            mock_manager = mocker.patch("arbiter.core.llm_client.LLMManager")
+            mock_manager = mocker.patch("arbiter_ai.core.llm_client.LLMManager")
             mock_manager.get_client = AsyncMock(side_effect=mock_get_client_func)
 
             record = Record(id="test_1", data={"text": "Great!"})

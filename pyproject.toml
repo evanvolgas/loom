@@ -9,7 +9,7 @@ description = "Declarative orchestration framework for AI pipelines with built-i
 authors = [{name = "Evan Volgas", email = "evan.volgas@gmail.com"}]
 license = {text = "MIT"}
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.11,<3.15"
 keywords = ["ai", "llm", "pipeline", "orchestration", "evaluation", "etl", "aietl"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
