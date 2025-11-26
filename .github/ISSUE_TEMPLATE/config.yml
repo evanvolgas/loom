@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/evanvolgas/loom#readme
+    about: Check the README for pipeline examples and quickstart
+  - name: Specifications
+    url: https://github.com/evanvolgas/loom/tree/main/docs
+    about: Design specs, architecture, quality gates, and timeout specifications
+  - name: Examples
+    url: https://github.com/evanvolgas/loom/tree/main/examples/pipelines
+    about: Example pipeline YAML files

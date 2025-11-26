@@ -1,0 +1,115 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please provide details about your pipeline use case.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What pipeline workflow does this feature enable?
+      placeholder: "Example: Need to extract data from PostgreSQL, but only local file sources are supported."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work in YAML?
+      placeholder: |
+        Add PostgreSQL source support:
+        
+        extract:
+          source: postgres://localhost/db
+          table: customers
+          query: "SELECT * FROM reviews WHERE created > :date"
+          params:
+            date: "2024-01-01"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: What type of feature is this?
+      options:
+        - New data source (Extract)
+        - New data destination (Load)
+        - New evaluator integration
+        - New quality gate type
+        - Pipeline orchestration enhancement
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact on Quality Gates
+      description: Does this affect evaluation or quality gates?
+      options:
+        - No impact on quality gates
+        - Adds new quality gate type
+        - Enhances existing quality gates
+        - Changes quality gate semantics
+    validations:
+      required: true
+
+  - type: textarea
+    id: yaml_example
+    attributes:
+      label: Example Pipeline YAML
+      description: Show how this would work in a pipeline
+      placeholder: |
+        name: postgres_pipeline
+        
+        extract:
+          source: postgres://...
+        
+        transform:
+          prompt: prompts/classify.txt
+        
+        evaluate:
+          evaluators:
+            - type: semantic
+        
+        load:
+          destination: output.csv
+      render: yaml
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What alternatives have you considered or tried?
+      placeholder: "Example: Tried exporting to CSV first but need real-time pipeline"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context or examples
+      placeholder: "Example: Common pattern in ETL workflows, similar to dbt's source connectors"
+
+  - type: checkboxes
+    id: compatibility
+    attributes:
+      label: Compatibility
+      description: Please confirm this aligns with Loom's design
+      options:
+        - label: This feature uses declarative YAML configuration
+          required: false
+        - label: This feature integrates with Arbiter evaluation (if applicable)
+          required: false
+        - label: This feature follows AI(E)TL pattern (Extract → Transform → Evaluate → Load)
+          required: false
+        - label: I'm willing to contribute a PR for this feature
+          required: false
